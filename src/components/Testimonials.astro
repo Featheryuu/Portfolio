@@ -1,0 +1,81 @@
+---
+const testimonials = [
+  {
+    quote: "Chia single-handedly developed the initial brand and app design for our company, coming up with the concept for our logo alongside a clean and intuitive UI for our apps that perfectly captured our vision. Her creativity, speed, and ability to translate early startup gobbledygook into a streamlined design was really impressive.",
+    name: "Hannan Hashmi",
+    role: "COO @ Kapsule",
+    surface: "pink",
+    initial: "H",
+  },
+  {
+    quote: "I had the pleasure of working closely with Chia-Ying Tsai, a remarkable service designer and product/graphic designer. Chia's contributions have been instrumental in shaping our success. She developed the principles for understanding user journeys, storytelling, and service design that are still at the core of our operations today.",
+    name: "David Chen",
+    role: "Co-CEO @ Kapsule",
+    surface: "yellow",
+    initial: "D",
+  },
+  {
+    quote: "Chia-Ying did an excellent job of helping clients understand her designs, the impact on other work streams, and built trust with client stakeholders. She followed up on blockers and ensured work was delivered on-time and within scope.",
+    name: "Senior Experience Designer",
+    role: "Capgemini",
+    surface: "blue",
+    initial: "C",
+  },
+];
+
+const surfaceMap: Record<string, string> = {
+  pink: 'bg-pink',
+  orange: 'bg-orange',
+  yellow: 'bg-yellow',
+  blue: 'bg-blue',
+};
+---
+
+<section id="testimonials" class="py-20 md:py-28 bg-bg-secondary relative overflow-hidden">
+  <div class="max-w-5xl mx-auto px-6 relative">
+    <div class="reveal max-w-2xl mb-14">
+      <p class="text-xs font-medium text-accent uppercase tracking-[0.18em] mb-3 flex items-center gap-3">
+        <span class="inline-block w-8 h-px bg-accent"></span>
+        Testimonials
+      </p>
+      <h2 class="text-3xl md:text-4xl font-semibold text-text-primary mb-4">
+        What colleagues say
+      </h2>
+      <p class="text-text-secondary text-lg">
+        Kind words from the people I've worked with across enterprise, product, and non-profit teams.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {testimonials.map((t, i) => (
+        <figure
+          tabindex="0"
+          aria-label={`Testimonial from ${t.name}, ${t.role}`}
+          class={`reveal group relative rounded-2xl border border-border ${surfaceMap[t.surface]} p-8 flex flex-col transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/5 focus-visible:-translate-y-1 focus-visible:shadow-xl focus-visible:shadow-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-secondary`}
+          style={`transition-delay: ${i * 100}ms`}
+        >
+          {/* Decorative quote mark */}
+          <svg class="absolute top-6 right-6 w-10 h-10 text-text-primary opacity-10 transition-opacity duration-300 group-hover:opacity-20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+            <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H8c0-1.1.9-2 2-2V8zm14 0c-3.3 0-6 2.7-6 6v10h10V14h-6c0-1.1.9-2 2-2V8z"/>
+          </svg>
+
+          <blockquote class="flex-1">
+            <p class="text-text-primary text-base leading-relaxed">
+              &ldquo;{t.quote}&rdquo;
+            </p>
+          </blockquote>
+
+          <figcaption class="mt-6 pt-6 border-t border-text-primary/10 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center text-sm font-semibold text-text-primary">
+              {t.initial}
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-text-primary">{t.name}</p>
+              <p class="text-xs text-text-tertiary">{t.role}</p>
+            </div>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

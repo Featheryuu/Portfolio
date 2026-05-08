@@ -1,0 +1,41 @@
+---
+const skills = [
+  { category: 'Design', items: ['UX Research', 'UI Design', 'Design Systems', 'Prototyping'] },
+  { category: 'Tools', items: ['Figma', 'Adobe Suite', 'Miro', 'Jira', 'AI Vibe Coding'] },
+  { category: 'Practice', items: ['Accessibility (WCAG)', 'Inclusive Design', 'Agile/Scrum', 'Design Thinking'] },
+];
+---
+
+<section id="skills" class="py-20 md:py-28 border-t border-border">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="reveal max-w-2xl mb-12">
+      <p class="text-xs font-medium text-accent uppercase tracking-[0.18em] mb-3 flex items-center gap-3">
+        <span class="inline-block w-8 h-px bg-accent"></span>
+        Skills
+      </p>
+      <h2 class="text-3xl md:text-4xl font-semibold text-text-primary mb-4">
+        What I bring to the table
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {skills.map((group, i) => (
+        <div class="reveal" style={`transition-delay: ${i * 100}ms`}>
+          <h3 class="text-sm font-semibold text-text-tertiary uppercase tracking-wider mb-4">
+            {group.category}
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            {group.items.map((skill) => (
+              <span
+                tabindex="0"
+                class="text-sm text-text-primary bg-bg-secondary px-3 py-1.5 rounded-full border border-border hover:bg-accent hover:text-surface hover:border-accent focus-visible:bg-accent focus-visible:text-surface focus-visible:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary transition-colors duration-300 cursor-default"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

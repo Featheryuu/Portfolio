@@ -1,0 +1,259 @@
+---
+const projects = [
+  {
+    title: 'My Heathrow',
+    description: 'Consolidating multiple airport services into a unified digital platform — improving passenger experience and driving loyalty engagement.',
+    tags: ['Enterprise', 'UX Research', 'Design System'],
+    category: 'Enterprise',
+    href: '/work/my-heathrow',
+    image: '/images/work/my-heathrow/hero.jpg',
+    imageAlt: 'My Heathrow airport services platform showing the unified dashboard',
+    surface: 'pink',
+  },
+  {
+    title: 'Kinship',
+    description: 'A care support platform that connects carers with guidance, resources, and community — making support more accessible.',
+    tags: ['Service', 'Accessibility', 'Mobile'],
+    category: 'Service',
+    href: '/work/kinship',
+    image: '/images/work/kinship/hero.jpg',
+    imageAlt: 'Kinship Connect — a guided sentence-builder form for kinship carers',
+    surface: 'orange',
+    imageBg: '#FEEECA',
+  },
+  {
+    title: 'Cornershop',
+    description: 'An omnichannel retail experience bridging digital and physical touchpoints, with operations dashboards for staff.',
+    tags: ['Retail', 'E-commerce', 'Service'],
+    category: 'Retail',
+    href: '/work/cornershop',
+    image: '/images/work/cornershop/hero.jpg',
+    imageAlt: 'Cornershop retail operations dashboard',
+    surface: 'blue',
+  },
+];
+
+const surfaceMap: Record<string, string> = { pink: 'bg-pink', orange: 'bg-orange', yellow: 'bg-yellow', blue: 'bg-blue' };
+---
+
+<section id="work" class="py-20 md:py-28 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal max-w-2xl mb-10 md:mb-12">
+      <p class="text-sm font-medium text-accent uppercase tracking-widest mb-3 flex items-center gap-3">
+        <span class="inline-block w-8 h-px bg-accent"></span>
+        Selected work
+      </p>
+      <h2 class="text-3xl md:text-4xl font-semibold text-text-primary mb-4">
+        Recent case studies
+      </h2>
+      <p class="text-text-secondary text-lg">
+        Sort through three recent projects — drag, click, or use the controls below.
+      </p>
+    </div>
+
+    {/* Deck */}
+    <div class="reveal flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+      <div class="relative w-full md:w-[58%] aspect-[5/4] select-none" data-deck>
+        {projects.map((project, i) => {
+          const surfaceClass = surfaceMap[project.surface];
+          return (
+            <a
+              href={project.href}
+              data-deck-card
+              data-index={i}
+              aria-label={`Open ${project.title} case study`}
+              class={`absolute inset-0 rounded-2xl border border-border overflow-hidden shadow-lg ${project.imageBg ? '' : surfaceClass} cursor-grab active:cursor-grabbing block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2`}
+              style={project.imageBg ? `background-color: ${project.imageBg}` : undefined}
+            >
+              <img src={project.image} alt={project.imageAlt} loading="lazy" class="w-full h-full object-cover pointer-events-none" />
+
+              {/* Bottom info bar */}
+              <div class="absolute inset-x-0 bottom-0 p-5 md:p-6 bg-gradient-to-t from-black/80 via-black/40 to-transparent text-white">
+                <div class="flex flex-wrap gap-2 mb-2">
+                  {project.tags.map((tag) => (
+                    <span class="text-[11px] font-medium px-2.5 py-1 rounded-full bg-white/20 backdrop-blur">{tag}</span>
+                  ))}
+                </div>
+                <h3 class="text-xl md:text-2xl font-semibold mb-1">{project.title}</h3>
+                <p class="text-sm text-white/80 line-clamp-2">{project.description}</p>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+
+      {/* Side controls + counter */}
+      <div class="w-full md:w-[42%] md:pl-2">
+        <p class="text-xs font-medium text-text-tertiary tracking-[0.2em] uppercase mb-3" data-counter>01 / {String(projects.length).padStart(2, '0')}</p>
+        <h3 class="text-2xl md:text-3xl font-semibold text-text-primary mb-3" data-current-title>{projects[0].title}</h3>
+        <p class="text-text-secondary leading-relaxed mb-6" data-current-desc>{projects[0].description}</p>
+
+        <div class="flex items-center gap-3 mb-6">
+          <button
+            type="button"
+            data-deck-prev
+            aria-label="Previous case study"
+            class="inline-flex items-center justify-center w-11 h-11 rounded-full border-2 border-text-primary/40 text-text-primary hover:border-text-primary hover:bg-surface transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          >
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            data-deck-next
+            aria-label="Next case study"
+            class="inline-flex items-center justify-center w-11 h-11 rounded-full bg-accent text-surface hover:bg-accent-hover transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+          >
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          <div class="flex gap-2 ml-2" role="tablist" aria-label="Jump to case study">
+            {projects.map((_, i) => (
+              <button
+                type="button"
+                role="tab"
+                data-deck-dot
+                data-index={i}
+                aria-selected={i === 0 ? 'true' : 'false'}
+                aria-label={`Go to case study ${i + 1}`}
+                class={`w-2 h-2 rounded-full transition-all duration-300 ${i === 0 ? 'bg-accent w-6' : 'bg-text-tertiary/40 hover:bg-text-tertiary'}`}
+              ></button>
+            ))}
+          </div>
+        </div>
+
+        <a
+          data-current-link
+          href={projects[0].href}
+          class="inline-flex items-center gap-2 px-5 py-2.5 bg-text-primary text-surface rounded-full font-medium text-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+        >
+          View case study
+          <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  type Project = { title: string; description: string; href: string };
+  const projectsData: Project[] = [
+    { title: 'My Heathrow', description: 'Consolidating multiple airport services into a unified digital platform — improving passenger experience and driving loyalty engagement.', href: '/work/my-heathrow' },
+    { title: 'Kinship', description: 'A care support platform that connects carers with guidance, resources, and community — making support more accessible.', href: '/work/kinship' },
+    { title: 'Cornershop', description: 'An omnichannel retail experience bridging digital and physical touchpoints, with operations dashboards for staff.', href: '/work/cornershop' },
+  ];
+
+  const deck = document.querySelector<HTMLElement>('[data-deck]');
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-deck-card]'));
+  const counter = document.querySelector<HTMLElement>('[data-counter]');
+  const titleEl = document.querySelector<HTMLElement>('[data-current-title]');
+  const descEl = document.querySelector<HTMLElement>('[data-current-desc]');
+  const linkEl = document.querySelector<HTMLAnchorElement>('[data-current-link]');
+  const prevBtn = document.querySelector<HTMLButtonElement>('[data-deck-prev]');
+  const nextBtn = document.querySelector<HTMLButtonElement>('[data-deck-next]');
+  const dots = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-deck-dot]'));
+
+  if (deck && cards.length) {
+    let active = 0;
+    const total = cards.length;
+
+    function render() {
+      cards.forEach((card, i) => {
+        const offset = (i - active + total) % total;
+        // Front card on top, others stacked behind with offset + rotation
+        if (offset === 0) {
+          card.style.zIndex = '30';
+          card.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
+          card.style.opacity = '1';
+          card.style.pointerEvents = 'auto';
+        } else if (offset === 1) {
+          card.style.zIndex = '20';
+          card.style.transform = 'translate(20px, 12px) rotate(3deg) scale(0.96)';
+          card.style.opacity = '0.85';
+          card.style.pointerEvents = 'none';
+        } else {
+          card.style.zIndex = '10';
+          card.style.transform = 'translate(-20px, 24px) rotate(-3deg) scale(0.92)';
+          card.style.opacity = '0.7';
+          card.style.pointerEvents = 'none';
+        }
+        card.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s';
+      });
+
+      const p = projectsData[active];
+      if (counter) counter.textContent = `${String(active + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+      if (titleEl) titleEl.textContent = p.title;
+      if (descEl) descEl.textContent = p.description;
+      if (linkEl) linkEl.href = p.href;
+
+      dots.forEach((dot, i) => {
+        const isActive = i === active;
+        dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        dot.classList.toggle('bg-accent', isActive);
+        dot.classList.toggle('w-6', isActive);
+        dot.classList.toggle('bg-text-tertiary/40', !isActive);
+      });
+    }
+
+    function next() { active = (active + 1) % total; render(); }
+    function prev() { active = (active - 1 + total) % total; render(); }
+
+    prevBtn?.addEventListener('click', prev);
+    nextBtn?.addEventListener('click', next);
+    dots.forEach((dot, i) => dot.addEventListener('click', () => { active = i; render(); }));
+
+    // Keyboard arrows when deck has focus within
+    deck.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+    });
+
+    // Drag / swipe on the front card
+    let dragging = false, startX = 0, dx = 0, suppressClick = false;
+    const front = () => cards[active];
+
+    deck.addEventListener('pointerdown', (e) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('[data-deck-card]')) return;
+      dragging = true;
+      startX = e.clientX;
+      dx = 0;
+      suppressClick = false;
+      const f = front();
+      f.style.transition = 'none';
+      f.setPointerCapture?.(e.pointerId);
+    });
+
+    deck.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) suppressClick = true;
+      const f = front();
+      const rot = dx / 30;
+      f.style.transform = `translate(${dx}px, 0) rotate(${rot}deg) scale(1)`;
+    });
+
+    deck.addEventListener('pointerup', (e) => {
+      if (!dragging) return;
+      dragging = false;
+      if (Math.abs(dx) > 80) {
+        if (dx < 0) next(); else prev();
+      } else {
+        render();
+      }
+    });
+
+    deck.addEventListener('click', (e) => {
+      if (suppressClick) {
+        e.preventDefault();
+        suppressClick = false;
+      }
+    }, true);
+
+    render();
+  }
+</script>

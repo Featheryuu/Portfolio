@@ -1,0 +1,157 @@
+---
+const projects = [
+  {
+    title: 'My Heathrow',
+    description: 'Consolidating multiple airport services into a unified digital platform — improving passenger experience and driving loyalty engagement.',
+    tags: ['Enterprise', 'UX Research'],
+    href: '/work/my-heathrow',
+    image: '/images/work/my-heathrow/hero.jpg',
+    imageAlt: 'My Heathrow airport services platform showing the unified dashboard',
+    surface: 'pink',
+    label: 'Enterprise',
+    rotate: '-rotate-3',
+  },
+  {
+    title: 'Kinship',
+    description: 'A care support platform that connects carers with guidance, resources, and community — making support more accessible.',
+    tags: ['Service', 'Accessibility'],
+    href: '/work/kinship',
+    image: '/images/work/kinship/hero.jpg',
+    imageAlt: 'Kinship Connect — a guided sentence-builder form for kinship carers',
+    surface: 'orange',
+    imageBg: '#FEEECA',
+    label: 'Service',
+    rotate: 'rotate-0',
+  },
+  {
+    title: 'Cornershop',
+    description: 'An omnichannel retail experience bridging digital and physical touchpoints, with operations dashboards for staff.',
+    tags: ['Retail', 'E-commerce'],
+    href: '/work/cornershop',
+    image: '/images/work/cornershop/hero.jpg',
+    imageAlt: 'Cornershop retail operations dashboard',
+    surface: 'blue',
+    label: 'Retail',
+    rotate: 'rotate-3',
+  },
+];
+
+const surfaceMap: Record<string, string> = { pink: 'bg-pink', orange: 'bg-orange', yellow: 'bg-yellow', blue: 'bg-blue' };
+---
+
+<section id="work" class="py-20 md:py-28 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal max-w-2xl mb-12 md:mb-16">
+      <p class="text-sm font-medium text-accent uppercase tracking-widest mb-3 flex items-center gap-3">
+        <span class="inline-block w-8 h-px bg-accent"></span>
+        Selected work
+      </p>
+      <h2 class="text-3xl md:text-4xl font-semibold text-text-primary mb-4">
+        Recent case studies
+      </h2>
+      <p class="text-text-secondary text-lg">
+        Hover a card — it straightens, lifts, and brings the case study forward.
+      </p>
+    </div>
+
+    <div class="reveal flex flex-col md:flex-row md:items-center md:justify-center gap-6 md:gap-0 py-6 md:py-12 fan-deck">
+      {projects.map((p, i) => {
+        const surfaceClass = surfaceMap[p.surface];
+        const number = String(i + 1).padStart(2, '0');
+        return (
+          <a
+            href={p.href}
+            data-fan-card
+            class={`fan-card group relative block w-full md:w-[30%] md:-mx-6 lg:-mx-10 ${p.rotate} rounded-2xl border border-border overflow-hidden bg-surface shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2`}
+            style={`z-index: ${i === 1 ? 30 : 10};`}
+          >
+            <div
+              class={`relative ${p.imageBg ? '' : surfaceClass} aspect-[4/5] overflow-hidden`}
+              style={p.imageBg ? `background-color: ${p.imageBg}` : undefined}
+            >
+              <img src={p.image} alt={p.imageAlt} loading="lazy" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]" />
+              {/* Number badge top-left */}
+              <span class="absolute top-4 left-4 inline-flex items-center justify-center min-w-10 h-10 px-3 rounded-full bg-surface/95 backdrop-blur text-xs font-semibold text-text-primary shadow-sm">
+                {number}
+              </span>
+              {/* Category label top-right */}
+              <span class={`absolute top-4 right-4 inline-flex items-center px-3 h-7 rounded-full text-[10px] font-semibold tracking-[0.18em] uppercase text-text-primary ${surfaceClass} shadow-sm`}>
+                {p.label}
+              </span>
+            </div>
+            <div class="p-5 md:p-6">
+              <h3 class="text-xl md:text-2xl font-semibold text-text-primary mb-2 transition-colors group-hover:text-accent">
+                {p.title}
+              </h3>
+              <p class="text-sm text-text-secondary leading-relaxed mb-4 line-clamp-2">{p.description}</p>
+              <div class="flex items-center justify-between">
+                <div class="flex flex-wrap gap-1.5">
+                  {p.tags.map((tag) => (
+                    <span class="text-[11px] font-medium text-text-primary border border-border px-2 py-0.5 rounded-full">{tag}</span>
+                  ))}
+                </div>
+                <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-text-primary opacity-70 group-hover:opacity-100 transition-opacity">
+                  Open
+                  <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .fan-card {
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, opacity 0.4s ease, z-index 0s 0.2s;
+    transform-origin: center bottom;
+    will-change: transform;
+  }
+
+  /* When the deck has a hovered card, fade the others slightly */
+  @media (hover: hover) {
+    .fan-deck:hover .fan-card:not(:hover) {
+      opacity: 0.6;
+    }
+
+    /* Hovered card straightens, lifts, scales up, comes to front */
+    .fan-deck .fan-card:hover {
+      transform: rotate(0deg) translateY(-12px) scale(1.04) !important;
+      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.25);
+      z-index: 50 !important;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, z-index 0s;
+    }
+
+    .fan-deck .fan-card:focus-visible {
+      transform: rotate(0deg) translateY(-12px) scale(1.04);
+      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.25);
+      z-index: 50;
+    }
+  }
+
+  /* On small screens, drop the rotation/overlap entirely */
+  @media (max-width: 767px) {
+    .fan-card {
+      transform: none !important;
+      margin: 0 !important;
+    }
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fan-card,
+    .fan-card:hover {
+      transition: none !important;
+    }
+  }
+</style>

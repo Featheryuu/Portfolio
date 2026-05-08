@@ -1,0 +1,173 @@
+<section class="relative overflow-hidden bg-bg-primary min-h-[92vh] flex items-center">
+  {/* Soft ellipses — white background, lighter blur, higher opacity */}
+  <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+    {/* Large warm pink/orange ellipse — top-right */}
+    <div
+      data-drift
+      data-drift-speed="0.025"
+      class="absolute -top-32 -right-24 w-[36rem] h-[36rem] rounded-full opacity-100 blur-2xl will-change-transform"
+      style="background: radial-gradient(circle at 40% 40%, var(--color-pink) 0%, var(--color-orange) 70%, transparent 100%);"
+    ></div>
+    {/* Blue ellipse — middle-right */}
+    <div
+      data-drift
+      data-drift-speed="-0.03"
+      class="absolute top-[40%] right-[6%] w-72 h-72 rounded-full bg-blue opacity-100 blur-2xl shape-breathe will-change-transform"
+    ></div>
+    {/* Yellow ellipse — bottom-right */}
+    <div
+      data-drift
+      data-drift-speed="0.02"
+      class="absolute -bottom-20 right-[14%] w-80 h-80 rounded-full bg-yellow opacity-100 blur-2xl will-change-transform"
+    ></div>
+    {/* Small pink ellipse — bottom-left */}
+    <div
+      class="absolute bottom-[14%] left-[6%] w-56 h-56 rounded-full bg-pink opacity-95 blur-2xl"
+    ></div>
+  </div>
+
+  <div class="max-w-5xl mx-auto px-6 py-16 md:py-24 relative w-full">
+    <div class="max-w-3xl">
+      {/* Availability badge */}
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-surface border border-border rounded-full mb-8 animate-fade-in-up shadow-sm">
+        <span class="relative flex w-2 h-2">
+          <span class="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75 animate-ping"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+        </span>
+        <span class="text-xs font-medium text-text-secondary">Available for new projects</span>
+      </div>
+
+      <p class="text-xs font-medium text-accent tracking-[0.18em] uppercase mb-5 animate-fade-in-up flex items-center gap-3">
+        <span class="inline-block w-8 h-px bg-accent"></span>
+        Product Designer
+      </p>
+
+      <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold text-text-primary leading-[1.05] mb-6 animate-fade-in-up animation-delay-100 tracking-tight">
+        Hi, I'm <span class="relative inline-block">
+          <span class="relative z-10">Chia-Ying</span>
+          <span class="absolute bottom-1 left-0 w-full h-3 bg-orange -z-0" aria-hidden="true"></span>
+        </span><br/>
+        I design{' '}
+        <span class="relative inline-block" data-rotate-keyword-b aria-hidden="true">
+          <span class="relative z-10 text-accent">experiences</span>
+          <span class="absolute bottom-1 left-0 w-full h-3 bg-yellow -z-0"></span>
+        </span>
+        <span class="sr-only">experiences, products, systems, and interfaces</span>
+      </h1>
+
+      <p class="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed mb-10 animate-fade-in-up animation-delay-200">
+        A full-stack product designer who solves real user problems and delivers measurable business outcomes. I advocate for inclusive design and create accessible, human-centered experiences.
+      </p>
+
+      {/* Inline stat strip */}
+      <div class="mb-10 pb-8 grid grid-cols-3 gap-4 md:gap-8 max-w-2xl animate-fade-in-up animation-delay-250">
+        <div>
+          <p class="text-2xl md:text-3xl font-bold text-text-primary">6+</p>
+          <p class="text-xs md:text-sm text-text-tertiary mt-1">Years designing</p>
+        </div>
+        <div>
+          <p class="text-2xl md:text-3xl font-bold text-text-primary">15+</p>
+          <p class="text-xs md:text-sm text-text-tertiary mt-1">Products shipped</p>
+        </div>
+        <div>
+          <p class="text-2xl md:text-3xl font-bold text-text-primary">10+</p>
+          <p class="text-xs md:text-sm text-text-tertiary mt-1">Clients served</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 animate-fade-in-up animation-delay-300">
+        <a
+          href="#work"
+          class="group inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-accent text-surface rounded-full font-medium text-sm hover:bg-accent-hover transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
+        >
+          View my work
+          <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
+        </a>
+        <a
+          href="#contact"
+          class="group inline-flex items-center justify-center px-8 py-3.5 border-2 border-text-primary/50 rounded-full font-medium text-sm text-text-primary hover:border-text-primary hover:bg-orange transition-all duration-300"
+        >
+          Get in touch
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isCoarse = window.matchMedia('(pointer: coarse)').matches;
+
+  // Rotating keyword
+  if (!reduceMotion) {
+    const words = ['experiences', 'products', 'systems', 'interfaces'];
+    const el = document.querySelector<HTMLElement>('[data-rotate-keyword-b] span.relative');
+    const headline = document.querySelector<HTMLElement>('h1');
+    if (el) {
+      let i = 0;
+      let paused = false;
+      const tick = () => {
+        if (paused) return;
+        i = (i + 1) % words.length;
+        el.style.transition = 'opacity 0.3s, transform 0.3s';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(-8px)';
+        setTimeout(() => {
+          el.textContent = words[i];
+          el.style.transform = 'translateY(8px)';
+          requestAnimationFrame(() => {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+          });
+        }, 300);
+      };
+      setInterval(tick, 2400);
+      headline?.addEventListener('mouseenter', () => { paused = true; });
+      headline?.addEventListener('mouseleave', () => { paused = false; });
+    }
+  }
+
+  // Mouse parallax for drifting shapes (desktop only, respects reduced motion)
+  if (!reduceMotion && !isCoarse) {
+    const shapes = document.querySelectorAll<HTMLElement>('[data-drift]');
+    let mx = 0, my = 0, tx = 0, ty = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mx = (e.clientX / window.innerWidth - 0.5) * 2;
+      my = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    function raf() {
+      tx += (mx - tx) * 0.06;
+      ty += (my - ty) * 0.06;
+      shapes.forEach((el) => {
+        const speed = parseFloat(el.dataset.driftSpeed || '0.02');
+        const x = tx * speed * 100;
+        const y = ty * speed * 100;
+        el.style.transform = `translate(${x}px, ${y}px)`;
+      });
+      requestAnimationFrame(raf);
+    }
+    raf();
+  }
+</script>
+
+<style>
+  /* Orange circle — gentle breathing scale */
+  @keyframes shape-breathe {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.06); }
+  }
+  .shape-breathe {
+    animation: shape-breathe 6s ease-in-out infinite;
+    transform-origin: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shape-breathe {
+      animation: none !important;
+    }
+  }
+</style>

@@ -1,0 +1,160 @@
+---
+const navItems = [
+  { label: 'Work', href: '/#work' },
+  { label: 'About', href: '/#about' },
+  { label: 'Contact', href: '/#contact' },
+  { label: 'CV', href: 'https://drive.google.com/file/d/1n0CbwqXHMu194CTtQIX4uspnyrIwdy4q/view?usp=sharing', external: true },
+];
+---
+
+<div
+  id="site-header"
+  class="sticky top-0 z-50 transition-[box-shadow] duration-300 pt-3 md:pt-4 pb-3 md:pb-4 px-3 md:px-6 overflow-visible"
+  data-scrolled="false"
+>
+  <header class="pill relative max-w-5xl mx-auto rounded-full border border-border bg-surface/90 backdrop-blur-md transition-shadow duration-300">
+    <nav class="px-5 md:px-6 h-14 flex items-center justify-between" aria-label="Main navigation">
+      <a href="/" class="group flex items-center gap-2 text-text-primary font-semibold text-[15px] md:text-base tracking-tight">
+        <span class="w-2 h-2 rounded-full bg-accent transition-transform duration-300 group-hover:scale-125"></span>
+        Chia-Ying Tsai
+      </a>
+
+      {/* Desktop nav */}
+      <ul class="hidden md:flex items-center gap-7" role="list">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
+              {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+              {item.label}
+              {item.external && (
+                <>
+                  <span class="inline-block ml-0.5 text-text-tertiary" aria-hidden="true">&#8599;</span>
+                  <span class="sr-only"> (opens in new tab)</span>
+                </>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      {/* Mobile hamburger */}
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden flex flex-col justify-center items-center w-9 h-9 gap-1.5"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="block w-5 h-0.5 bg-text-primary transition-all duration-300 origin-center" id="bar1"></span>
+        <span class="block w-5 h-0.5 bg-text-primary transition-all duration-300" id="bar2"></span>
+        <span class="block w-5 h-0.5 bg-text-primary transition-all duration-300 origin-center" id="bar3"></span>
+      </button>
+    </nav>
+  </header>
+</div>
+
+{/* Mobile menu overlay (lives outside the floating pill so it covers full viewport) */}
+<div
+  id="mobile-menu"
+  class="md:hidden fixed bg-surface z-40 flex flex-col items-center justify-center gap-8 pointer-events-none transition-opacity duration-300"
+  style="opacity: 0; top: 0; left: 0; right: 0; height: 100vh;"
+  aria-hidden="true"
+  inert
+>
+  {navItems.map((item) => (
+    <a
+      href={item.href}
+      class="text-2xl font-medium text-text-secondary hover:text-text-primary transition-colors mobile-nav-link"
+      {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+    >
+      {item.label}
+      {item.external && (
+        <>
+          <span class="inline-block ml-1 text-text-tertiary" aria-hidden="true">&#8599;</span>
+          <span class="sr-only"> (opens in new tab)</span>
+        </>
+      )}
+    </a>
+  ))}
+</div>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const bar1 = document.getElementById('bar1');
+  const bar2 = document.getElementById('bar2');
+  const bar3 = document.getElementById('bar3');
+  let isOpen = false;
+
+  function toggleMenu() {
+    isOpen = !isOpen;
+    btn?.setAttribute('aria-expanded', String(isOpen));
+    btn?.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    menu?.setAttribute('aria-hidden', String(!isOpen));
+    if (isOpen) {
+      menu?.removeAttribute('inert');
+    } else {
+      menu?.setAttribute('inert', '');
+    }
+
+    if (isOpen) {
+      if (menu) menu.style.opacity = '1';
+      menu?.classList.remove('pointer-events-none');
+      menu?.classList.add('pointer-events-auto');
+      bar1?.classList.add('rotate-45', 'translate-y-1');
+      if (bar2) bar2.style.opacity = '0';
+      bar3?.classList.add('-rotate-45', '-translate-y-1');
+      document.body.style.overflow = 'hidden';
+      // Move focus to first link for keyboard users
+      const firstLink = menu?.querySelector<HTMLAnchorElement>('a');
+      firstLink?.focus();
+    } else {
+      if (menu) menu.style.opacity = '0';
+      menu?.classList.add('pointer-events-none');
+      menu?.classList.remove('pointer-events-auto');
+      bar1?.classList.remove('rotate-45', 'translate-y-1');
+      if (bar2) bar2.style.opacity = '';
+      bar3?.classList.remove('-rotate-45', '-translate-y-1');
+      document.body.style.overflow = '';
+      // Return focus to toggle button
+      btn?.focus();
+    }
+  }
+
+  btn?.addEventListener('click', toggleMenu);
+
+  // Close on mobile nav link click
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      if (isOpen) toggleMenu();
+    });
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen) toggleMenu();
+  });
+
+  // Editorial Clear: toggle a hairline border + faint fill once scrolled past hero
+  const header = document.getElementById('site-header');
+  if (header) {
+    const onScroll = () => {
+      header.dataset.scrolled = window.scrollY > 80 ? 'true' : 'false';
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>
+
+<style>
+  /* Floating pill shadow — slightly stronger once user has scrolled past the top */
+  #site-header .pill {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  }
+  #site-header[data-scrolled='true'] .pill {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+</style>
