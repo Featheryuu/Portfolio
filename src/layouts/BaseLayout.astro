@@ -7,19 +7,22 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  lang?: 'en' | 'zh';
 }
 
 const {
   title,
   description = "I am an interdisciplinary designer, creating solutions for users and advocating for inclusive design.",
-  ogImage = "/images/og-default.jpg"
+  ogImage = "/images/og-default.jpg",
+  lang = 'en',
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const htmlLang = lang === 'zh' ? 'zh-Hant' : 'en';
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={htmlLang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -51,12 +54,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="generator" content={Astro.generator} />
   </head>
   <body class="min-h-screen flex flex-col">
-    <a href="#main-content" class="skip-to-content">Skip to content</a>
-    <Nav />
+    <a href="#main-content" class="skip-to-content">{lang === 'zh' ? '跳至內容' : 'Skip to content'}</a>
+    <Nav lang={lang} />
     <main id="main-content" class="flex-1">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
 
     <script>
       // Scroll-reveal via IntersectionObserver

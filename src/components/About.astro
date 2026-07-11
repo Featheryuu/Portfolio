@@ -1,18 +1,68 @@
 ---
-const experience = [
-  {
-    role: 'Product Designer',
-    company: 'Capgemini',
-    period: '2021 – 2024',
-    description: 'Leading design for enterprise clients including Heathrow Airport and Lloyds Bank. Creating accessible, scalable design systems and user-centered digital experiences.',
-  },
-  {
-    role: 'UX / Service Designer',
-    company: 'Snook (NEC Digital)',
-    period: '2020 – 2021',
-    description: 'Designed care support platforms, improving access to guidance and resources for carers and families across the UK.',
-  },
-];
+interface Props {
+  lang?: 'en' | 'zh';
+}
+const { lang = 'en' } = Astro.props;
+
+const experience = lang === 'zh'
+  ? [
+      {
+        role: '自由接案產品設計師',
+        company: '獨立接案',
+        period: '2024 – 至今',
+        description: '與新創及成長中的團隊合作進行端到端產品設計 — 結合使用者研究、設計系統，以及 AI 輔助的原型製作與 vibe coding，加速從概念到上線。',
+      },
+      {
+        role: '產品設計師',
+        company: 'Capgemini',
+        period: '2021 – 2024',
+        description: '主導 Heathrow 機場與 Lloyds 銀行等企業客戶的設計，打造無障礙、可擴展的設計系統與以使用者為中心的數位體驗。',
+      },
+      {
+        role: 'UX／服務設計師',
+        company: 'Snook (NEC Digital)',
+        period: '2020 – 2021',
+        description: '設計照護支援平台，改善全英國照顧者與家庭取得指引與資源的管道。',
+      },
+    ]
+  : [
+      {
+        role: 'Freelance Product Designer',
+        company: 'Independent',
+        period: '2024 – Present',
+        description: 'Partnering with startups and growing teams on end-to-end product design — combining UX research, design systems, and AI-assisted prototyping and vibe coding to move faster from concept to launch.',
+      },
+      {
+        role: 'Product Designer',
+        company: 'Capgemini',
+        period: '2021 – 2024',
+        description: 'Leading design for enterprise clients including Heathrow Airport and Lloyds Bank. Creating accessible, scalable design systems and user-centered digital experiences.',
+      },
+      {
+        role: 'UX / Service Designer',
+        company: 'Snook (NEC Digital)',
+        period: '2020 – 2021',
+        description: 'Designed care support platforms, improving access to guidance and resources for carers and families across the UK.',
+      },
+    ];
+
+const ui = lang === 'zh'
+  ? {
+      eyebrow: '關於',
+      heading: '以人為本的設計師',
+      bio1: '我是一位跨領域的產品設計師，熱衷於打造以人為先、富有意義的數位體驗。我以倫敦為據點，工作橫跨完整的產品生命週期 — 從研究與策略到細緻的 UI 與設計系統。',
+      bio2: '我提倡包容性設計與無障礙，相信最好的產品應服務每一個人。我的方法結合分析思維與創意解題，並始終立基於真實的使用者需求與可衡量的成果。',
+      experience: '工作經歷',
+      ariaLabel: (role: string, company: string, period: string) => `${role}，${company}，${period}`,
+    }
+  : {
+      eyebrow: 'About',
+      heading: 'Designer with a human focus',
+      bio1: "I'm an interdisciplinary product designer with a passion for creating meaningful digital experiences that put people first. Based in London, I work across the full product lifecycle — from research and strategy to detailed UI and design systems.",
+      bio2: 'I advocate for inclusive design and accessibility, believing that the best products serve everyone. My approach combines analytical thinking with creative problem-solving, always grounded in real user needs and measurable outcomes.',
+      experience: 'Experience',
+      ariaLabel: (role: string, company: string, period: string) => `${role} at ${company}, ${period}`,
+    };
 ---
 
 <section id="about" class="py-20 md:py-28 bg-gradient-soft relative overflow-visible">
@@ -36,17 +86,17 @@ const experience = [
       <div class="reveal">
         <p class="text-sm font-medium text-accent uppercase tracking-widest mb-3 flex items-center gap-3">
           <span class="inline-block w-8 h-px bg-accent"></span>
-          About
+          {ui.eyebrow}
         </p>
         <h2 class="text-3xl md:text-4xl font-semibold text-text-primary mb-6">
-          Designer with a human focus
+          {ui.heading}
         </h2>
         <div class="space-y-4 text-text-secondary leading-relaxed">
           <p>
-            I'm an interdisciplinary product designer with a passion for creating meaningful digital experiences that put people first. Based in London, I work across the full product lifecycle — from research and strategy to detailed UI and design systems.
+            {ui.bio1}
           </p>
           <p>
-            I advocate for inclusive design and accessibility, believing that the best products serve everyone. My approach combines analytical thinking with creative problem-solving, always grounded in real user needs and measurable outcomes.
+            {ui.bio2}
           </p>
         </div>
       </div>
@@ -54,13 +104,13 @@ const experience = [
       {/* Experience */}
       <div class="reveal" style="transition-delay: 100ms">
         <h3 class="text-lg font-semibold text-text-primary mb-6">
-          Experience
+          {ui.experience}
         </h3>
         <div class="space-y-8">
           {experience.map((job) => (
             <div
               tabindex="0"
-              aria-label={`${job.role} at ${job.company}, ${job.period}`}
+              aria-label={ui.ariaLabel(job.role, job.company, job.period)}
               class="relative pl-6 border-l-2 border-border rounded-r-lg transition-all duration-300 hover:border-accent focus-visible:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
             >
               <div class="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-accent"></div>

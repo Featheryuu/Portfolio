@@ -1,9 +1,24 @@
 ---
-const skills = [
-  { category: 'Design', items: ['UX Research', 'UI Design', 'Design Systems', 'Prototyping'] },
-  { category: 'Tools', items: ['Figma', 'Adobe Suite', 'Miro', 'Jira', 'AI Vibe Coding'] },
-  { category: 'Practice', items: ['Accessibility (WCAG)', 'Inclusive Design', 'Agile/Scrum', 'Design Thinking'] },
-];
+interface Props {
+  lang?: 'en' | 'zh';
+}
+const { lang = 'en' } = Astro.props;
+
+const skills = lang === 'zh'
+  ? [
+      { category: '設計', items: ['使用者研究', 'UI 設計', '設計系統', '原型製作'] },
+      { category: '工具', items: ['Figma', 'Adobe Suite', 'Miro', 'Jira', 'AI Vibe Coding'] },
+      { category: '實務', items: ['無障礙 (WCAG)', '包容性設計', 'Agile/Scrum', '設計思考'] },
+    ]
+  : [
+      { category: 'Design', items: ['UX Research', 'UI Design', 'Design Systems', 'Prototyping'] },
+      { category: 'Tools', items: ['Figma', 'Adobe Suite', 'Miro', 'Jira', 'AI Vibe Coding'] },
+      { category: 'Practice', items: ['Accessibility (WCAG)', 'Inclusive Design', 'Agile/Scrum', 'Design Thinking'] },
+    ];
+
+const ui = lang === 'zh'
+  ? { eyebrow: '技能', heading: '我的專長' }
+  : { eyebrow: 'Skills', heading: 'Skills & tools' };
 ---
 
 <section id="skills" class="py-20 md:py-28 border-t border-border">
@@ -11,10 +26,10 @@ const skills = [
     <div class="reveal max-w-2xl mb-12">
       <p class="text-xs font-medium text-accent uppercase tracking-[0.18em] mb-3 flex items-center gap-3">
         <span class="inline-block w-8 h-px bg-accent"></span>
-        Skills
+        {ui.eyebrow}
       </p>
       <h2 class="text-3xl md:text-4xl font-semibold text-text-primary mb-4">
-        What I bring to the table
+        {ui.heading}
       </h2>
     </div>
 

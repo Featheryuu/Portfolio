@@ -1,0 +1,104 @@
+---
+interface Props {
+  lang?: 'en' | 'zh';
+}
+const { lang = 'en' } = Astro.props;
+
+const icons = {
+  code: 'M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5',
+  synthesis: 'M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z',
+  prototype: 'M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z',
+  shield: 'M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z',
+};
+
+const t = lang === 'zh'
+  ? {
+      eyebrow: 'AI × 設計',
+      headLead: '我用 AI ',
+      headHighlight: '設計',
+      headTail: '，也用 AI 打造',
+      blurb: '我把 AI 當作創意的倍增器 — 加速研究、原型與程式碼，而人的判斷、無障礙與倫理始終主導。',
+      cards: [
+        { surface: 'bg-yellow', title: 'Vibe coding', body: '我與 AI 編碼代理（Claude Code、Cursor）協作，把設計直接變成可運作的產品。這個作品集網站就是我親自設計、並以 vibe coding 從零打造的。', icon: icons.code },
+        { surface: 'bg-pink', title: 'AI 加速的研究綜整', body: '訪談逐字稿、問卷與數據，在數小時內化為主題與洞察，而非數週 — 每個結論的來源仍逐一人工查核。', icon: icons.synthesis },
+        { surface: 'bg-orange', title: '以思考的速度做原型', body: '運用生成式工具，一天內從低擬真概念到可點擊、可測試的原型 — 更多迭代，更早獲得真實使用者回饋。', icon: icons.prototype },
+        { surface: 'bg-blue', title: '負責任的 AI 應用', body: '我清楚 AI 在哪裡幫得上忙、哪裡可能造成傷害：隱私、偏誤與無障礙審查，是每一個 AI 輔助交付物的必要環節。', icon: icons.shield },
+      ],
+      proofLead: '實際證明：',
+      proofText: '這個網站由我設計，並與 AI 結對編程完成',
+      tools: ['Claude Code', 'Cursor', 'Figma AI', 'Astro + Tailwind'],
+    }
+  : {
+      eyebrow: 'AI × Design',
+      headLead: 'I design ',
+      headHighlight: 'with AI',
+      headTail: ' — and build with it too',
+      blurb: 'I treat AI as a creative multiplier — it accelerates research, prototyping, and code, while human judgment, accessibility, and ethics stay in charge.',
+      cards: [
+        { surface: 'bg-yellow', title: 'Vibe coding', body: 'I pair with AI coding agents (Claude Code, Cursor) to turn designs into working products. This portfolio was designed and vibe-coded by me, end to end.', icon: icons.code },
+        { surface: 'bg-pink', title: 'AI-accelerated synthesis', body: 'Interview transcripts, surveys, and analytics distilled into themes and insights in hours instead of weeks — with every source checked by hand.', icon: icons.synthesis },
+        { surface: 'bg-orange', title: 'Prototyping at speed', body: 'From lo-fi concept to a clickable, testable prototype in a day using generative tools — more iterations, earlier real-user feedback.', icon: icons.prototype },
+        { surface: 'bg-blue', title: 'Responsible by design', body: 'I know where AI helps and where it harms: privacy, bias, and accessibility reviews are part of every AI-assisted deliverable.', icon: icons.shield },
+      ],
+      proofLead: 'Proof:',
+      proofText: 'this site was designed by me and pair-programmed with AI',
+      tools: ['Claude Code', 'Cursor', 'Figma AI', 'Astro + Tailwind'],
+    };
+---
+
+<section id="ai" class="py-20 md:py-28 relative overflow-hidden">
+  <div class="max-w-5xl mx-auto px-6 relative">
+    <div class="reveal max-w-3xl mb-14">
+      <p class="text-sm font-medium text-accent uppercase tracking-widest mb-3 flex items-center gap-3">
+        <span class="inline-block w-8 h-px bg-accent"></span>
+        {t.eyebrow}
+      </p>
+      <h2 class="text-3xl md:text-4xl font-semibold text-text-primary leading-tight mb-4">
+        {t.headLead}<span class="relative inline-block">
+          <span class="relative z-10">{t.headHighlight}</span>
+          <span class="absolute bottom-1 left-0 w-full h-3 bg-orange -z-0" aria-hidden="true"></span>
+        </span>{t.headTail}
+      </h2>
+      <p class="text-text-secondary text-lg">
+        {t.blurb}
+      </p>
+    </div>
+
+    {/* 2x2 grid — icon tile + content, mirrors ValueProp rhythm */}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 mb-10">
+      {t.cards.map((card, i) => (
+        <div
+          class="reveal flex gap-5 rounded-2xl border border-border bg-surface p-6 md:p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-text-tertiary/30"
+          style={`transition-delay: ${i * 60}ms`}
+        >
+          <div class={`shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-xl ${card.surface} flex items-center justify-center text-text-primary`}>
+            <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d={card.icon} />
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-base md:text-lg font-semibold text-text-primary mb-2 leading-snug">
+              {card.title}
+            </h3>
+            <p class="text-sm text-text-secondary leading-relaxed">
+              {card.body}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Proof strip */}
+    <div class="reveal flex flex-wrap items-center gap-x-3 gap-y-3 rounded-2xl border border-border bg-bg-secondary px-6 py-5">
+      <p class="text-sm text-text-primary">
+        <span class="font-semibold">{t.proofLead}</span>
+        {' '}{t.proofText}
+      </p>
+      <div class="flex flex-wrap gap-1.5 sm:ml-auto">
+        {t.tools.map((tool) => (
+          <span class="text-xs font-medium text-text-secondary bg-surface border border-border px-2.5 py-1 rounded-full">{tool}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

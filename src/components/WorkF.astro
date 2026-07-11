@@ -1,43 +1,92 @@
 ---
-const projects = [
-  {
-    title: 'My Heathrow',
-    description: 'Consolidating multiple airport services into a unified digital platform — improving passenger experience and driving loyalty engagement.',
-    tags: ['Enterprise', 'UX Research', 'Design System'],
-    href: '/work/my-heathrow',
-    image: '/images/work/my-heathrow/hero.jpg',
-    imageAlt: 'My Heathrow airport services platform showing the unified dashboard',
-    surface: 'pink',
-    category: 'Enterprise',
-    impact: 'Loyalty ↑',
-    impactLabel: 'Engagement lift across services',
-  },
-  {
-    title: 'Kinship',
-    description: 'A care support platform that connects carers with guidance, resources, and community — making support more accessible.',
-    tags: ['Service', 'Accessibility', 'Mobile'],
-    href: '/work/kinship',
-    image: '/images/work/kinship/hero.jpg',
-    imageAlt: 'Kinship Connect — a guided sentence-builder form for kinship carers',
-    surface: 'orange',
-    imageBg: '#FEEECA',
-    category: 'Service',
-    impact: '20',
-    impactLabel: 'Carer interviews shaping the design',
-  },
-  {
-    title: 'Cornershop',
-    description: 'An omnichannel retail experience bridging digital and physical touchpoints, with operations dashboards for staff.',
-    tags: ['Retail', 'E-commerce', 'Dashboard'],
-    href: '/work/cornershop',
-    image: '/images/work/cornershop/hero.jpg',
-    imageAlt: 'Cornershop retail operations dashboard',
-    surface: 'blue',
-    category: 'Retail',
-    impact: 'Omnichannel',
-    impactLabel: 'Blueprint connecting store + web',
-  },
-];
+interface Props {
+  lang?: 'en' | 'zh';
+}
+const { lang = 'en' } = Astro.props;
+
+const projects = lang === 'zh'
+  ? [
+      {
+        title: 'My Heathrow',
+        description: '將多項機場服務整合至統一的數位平台 — 提升旅客體驗並推動會員忠誠度參與。',
+        tags: ['企業', '使用者研究', '設計系統'],
+        href: '/zh/work/my-heathrow',
+        image: '/images/work/my-heathrow/hero.jpg',
+        imageAlt: 'My Heathrow 機場服務平台的統一儀表板',
+        surface: 'pink',
+        category: '企業',
+        impact: '3 → 1',
+        impactLabel: '三項服務整合為單一登入',
+      },
+      {
+        title: 'Kinship',
+        description: '連結照顧者與指引、資源及社群的照護支援平台 — 讓支援更容易取得。',
+        tags: ['服務', '無障礙', '行動裝置'],
+        href: '/zh/work/kinship',
+        image: '/images/work/kinship/hero.jpg',
+        imageAlt: 'Kinship Connect — 為親屬照顧者設計的引導式造句表單',
+        surface: 'orange',
+        imageBg: '#FEEECA',
+        category: '服務',
+        impact: '20',
+        impactLabel: '形塑設計的照顧者訪談',
+      },
+      {
+        title: 'Cornershop',
+        description: '橫跨數位與實體接觸點的全通路零售體驗，並為店員提供營運儀表板。',
+        tags: ['零售', '電商', '儀表板'],
+        href: '/zh/work/cornershop',
+        image: '/images/work/cornershop/hero.jpg',
+        imageAlt: 'Cornershop 零售營運儀表板',
+        surface: 'blue',
+        category: '零售',
+        impact: '全通路',
+        impactLabel: '串連門市與網站的藍圖',
+      },
+    ]
+  : [
+      {
+        title: 'My Heathrow',
+        description: 'Consolidating multiple airport services into a unified digital platform — improving passenger experience and driving loyalty engagement.',
+        tags: ['Enterprise', 'UX Research', 'Design System'],
+        href: '/work/my-heathrow',
+        image: '/images/work/my-heathrow/hero.jpg',
+        imageAlt: 'My Heathrow airport services platform showing the unified dashboard',
+        surface: 'pink',
+        category: 'Enterprise',
+        impact: '3 → 1',
+        impactLabel: 'Services unified under one login',
+      },
+      {
+        title: 'Kinship',
+        description: 'A care support platform that connects carers with guidance, resources, and community — making support more accessible.',
+        tags: ['Service', 'Accessibility', 'Mobile'],
+        href: '/work/kinship',
+        image: '/images/work/kinship/hero.jpg',
+        imageAlt: 'Kinship Connect — a guided sentence-builder form for kinship carers',
+        surface: 'orange',
+        imageBg: '#FEEECA',
+        category: 'Service',
+        impact: '20',
+        impactLabel: 'Carer interviews shaping the design',
+      },
+      {
+        title: 'Cornershop',
+        description: 'An omnichannel retail experience bridging digital and physical touchpoints, with operations dashboards for staff.',
+        tags: ['Retail', 'E-commerce', 'Dashboard'],
+        href: '/work/cornershop',
+        image: '/images/work/cornershop/hero.jpg',
+        imageAlt: 'Cornershop retail operations dashboard',
+        surface: 'blue',
+        category: 'Retail',
+        impact: 'Omnichannel',
+        impactLabel: 'Blueprint connecting store + web',
+      },
+    ];
+
+const ui = lang === 'zh'
+  ? { eyebrow: '精選作品', heading: '近期案例研究', project: '專案' }
+  : { eyebrow: 'Selected work', heading: 'Recent case studies', project: 'Project' };
 
 const surfaceMap: Record<string, string> = { pink: 'bg-pink', orange: 'bg-orange', yellow: 'bg-yellow', blue: 'bg-blue' };
 ---
@@ -48,10 +97,10 @@ const surfaceMap: Record<string, string> = { pink: 'bg-pink', orange: 'bg-orange
     <div class="reveal mb-12 md:mb-16">
       <p class="text-sm font-medium text-accent uppercase tracking-widest mb-3 flex items-center gap-3">
         <span class="inline-block w-8 h-px bg-accent"></span>
-        Selected work
+        {ui.eyebrow}
       </p>
       <h2 class="text-3xl md:text-4xl lg:text-5xl font-semibold text-text-primary leading-tight">
-        Recent case studies
+        {ui.heading}
       </h2>
     </div>
 
@@ -90,7 +139,7 @@ const surfaceMap: Record<string, string> = { pink: 'bg-pink', orange: 'bg-orange
                       {p.category}
                     </span>
                     <span class="text-[11px] font-semibold tracking-[0.2em] uppercase text-text-tertiary">
-                      Project {number}
+                      {ui.project} {number}
                     </span>
                   </div>
 

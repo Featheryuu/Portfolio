@@ -1,38 +1,26 @@
 ---
-const steps = [
-  {
-    number: '01',
-    title: 'Define',
-    description: 'Understand the problem space, stakeholder goals, and user needs through research and analysis.',
-    surface: 'bg-pink',
-    tags: ['Stakeholder interviews', 'Problem framing', 'Success metrics'],
-    visual: 'define',
-  },
-  {
-    number: '02',
-    title: 'Discover',
-    description: 'Explore opportunities through user research, competitive analysis, and collaborative workshops.',
-    surface: 'bg-orange',
-    tags: ['User interviews', 'Journey maps', 'Synthesis'],
-    visual: 'discover',
-  },
-  {
-    number: '03',
-    title: 'Develop',
-    description: 'Create solutions through iterative prototyping, testing, and design system thinking.',
-    surface: 'bg-yellow',
-    tags: ['Wireframes', 'Hi-fi designs', 'Usability testing', 'Vibe coding'],
-    visual: 'develop',
-  },
-  {
-    number: '04',
-    title: 'Deliver',
-    description: 'Ship polished designs with clear documentation, handoff specs, and measurable outcomes.',
-    surface: 'bg-blue',
-    tags: ['Design system', 'Dev handoff', 'QA review'],
-    visual: 'deliver',
-  },
-];
+interface Props {
+  lang?: 'en' | 'zh';
+}
+const { lang = 'en' } = Astro.props;
+
+const steps = lang === 'zh'
+  ? [
+      { number: '01', title: '定義', description: '透過研究與分析，了解問題範疇、利害關係人目標與使用者需求。', surface: 'bg-pink', tags: ['利害關係人訪談', '問題定義', '成功指標'], visual: 'define' },
+      { number: '02', title: '探索', description: '透過使用者研究、競品分析與協作工作坊探索機會。', surface: 'bg-orange', tags: ['使用者訪談', '旅程地圖', '綜整分析'], visual: 'discover' },
+      { number: '03', title: '開發', description: '透過反覆的原型製作、測試與設計系統思維，打造解決方案。', surface: 'bg-yellow', tags: ['線框稿', '高擬真設計', '可用性測試', 'Vibe coding'], visual: 'develop' },
+      { number: '04', title: '交付', description: '交付精緻的設計，附上清晰的文件、交接規格與可衡量的成果。', surface: 'bg-blue', tags: ['設計系統', '開發交接', 'QA 審查'], visual: 'deliver' },
+    ]
+  : [
+      { number: '01', title: 'Define', description: 'Understand the problem space, stakeholder goals, and user needs through research and analysis.', surface: 'bg-pink', tags: ['Stakeholder interviews', 'Problem framing', 'Success metrics'], visual: 'define' },
+      { number: '02', title: 'Discover', description: 'Explore opportunities through user research, competitive analysis, and collaborative workshops.', surface: 'bg-orange', tags: ['User interviews', 'Journey maps', 'Synthesis'], visual: 'discover' },
+      { number: '03', title: 'Develop', description: 'Create solutions through iterative prototyping, testing, and design system thinking.', surface: 'bg-yellow', tags: ['Wireframes', 'Hi-fi designs', 'Usability testing', 'Vibe coding'], visual: 'develop' },
+      { number: '04', title: 'Deliver', description: 'Ship polished designs with clear documentation, handoff specs, and measurable outcomes.', surface: 'bg-blue', tags: ['Design system', 'Dev handoff', 'QA review'], visual: 'deliver' },
+    ];
+
+const ui = lang === 'zh'
+  ? { eyebrow: '流程', heading: '我的工作方式', blurb: '結構化且具彈性的方法 — 從定義到交付，循序漸進。', goToStep: (n: string, title: string) => `前往步驟 ${n} ${title}`, stepLabel: (n: string, title: string) => `步驟 ${n}：${title}` }
+  : { eyebrow: 'Process', heading: 'How I work', blurb: 'A structured yet flexible approach — auto-stepping from define to deliver.', goToStep: (n: string, title: string) => `Go to step ${n} ${title}`, stepLabel: (n: string, title: string) => `Step ${n}: ${title}` };
 ---
 
 <section id="process" class="py-20 md:py-28 bg-gradient-value relative overflow-visible">
@@ -54,13 +42,13 @@ const steps = [
     <div class="reveal max-w-2xl mb-12 md:mb-16">
       <p class="text-xs font-medium text-accent uppercase tracking-[0.18em] mb-3 flex items-center gap-3">
         <span class="inline-block w-8 h-px bg-accent"></span>
-        Process
+        {ui.eyebrow}
       </p>
       <h2 class="text-3xl md:text-4xl font-semibold text-text-primary mb-4">
-        How I work
+        {ui.heading}
       </h2>
       <p class="text-text-secondary text-lg">
-        A structured yet flexible approach — auto-stepping from define to deliver.
+        {ui.blurb}
       </p>
     </div>
 
@@ -82,7 +70,7 @@ const steps = [
             data-process-dot
             data-index={i}
             data-active={i === 0 ? 'true' : 'false'}
-            aria-label={`Go to step ${step.number} ${step.title}`}
+            aria-label={ui.goToStep(step.number, step.title)}
             class="dot-btn group flex flex-col items-center gap-2 focus:outline-none"
           >
             <span class="dot-circle relative w-7 h-7 md:w-8 md:h-8 rounded-full bg-surface border-2 border-border flex items-center justify-center transition-all duration-300 shadow-sm">
@@ -105,7 +93,7 @@ const steps = [
           data-index={i}
           data-active={i === 0 ? 'true' : 'false'}
           tabindex="0"
-          aria-label={`Step ${step.number}: ${step.title}`}
+          aria-label={ui.stepLabel(step.number, step.title)}
           class={`process-card group h-full rounded-2xl border border-border bg-surface/85 backdrop-blur-md p-5 flex flex-col cursor-pointer transition-all duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2`}
         >
           {/* Inline icon + step number */}
