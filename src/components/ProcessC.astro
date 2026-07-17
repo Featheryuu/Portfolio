@@ -1,0 +1,148 @@
+---
+interface Props {
+  lang?: 'en' | 'zh';
+}
+const { lang = 'en' } = Astro.props;
+
+const steps = lang === 'zh'
+  ? [
+      { number: '01', title: '定義', description: '透過研究與分析，了解問題範疇、利害關係人目標與使用者需求。', surface: 'bg-pink', tags: ['利害關係人訪談', '問題定義', '成功指標'], visual: 'define' },
+      { number: '02', title: '探索', description: '透過使用者研究、競品分析與協作工作坊探索機會。', surface: 'bg-orange', tags: ['使用者訪談', '旅程地圖', '綜整分析'], visual: 'discover' },
+      { number: '03', title: '開發', description: '透過反覆的原型製作、測試與設計系統思維，打造解決方案。', surface: 'bg-yellow', tags: ['線框稿', '高擬真設計', '可用性測試', 'Vibe coding'], visual: 'develop' },
+      { number: '04', title: '交付', description: '交付精緻的設計，附上清晰的文件、交接規格與可衡量的成果。', surface: 'bg-blue', tags: ['設計系統', '開發交接', 'QA 審查'], visual: 'deliver' },
+    ]
+  : [
+      { number: '01', title: 'Define', description: 'Understand the problem space, stakeholder goals, and user needs through research and analysis.', surface: 'bg-pink', tags: ['Stakeholder interviews', 'Problem framing', 'Success metrics'], visual: 'define' },
+      { number: '02', title: 'Discover', description: 'Explore opportunities through user research, competitive analysis, and collaborative workshops.', surface: 'bg-orange', tags: ['User interviews', 'Journey maps', 'Synthesis'], visual: 'discover' },
+      { number: '03', title: 'Develop', description: 'Create solutions through iterative prototyping, testing, and design system thinking.', surface: 'bg-yellow', tags: ['Wireframes', 'Hi-fi designs', 'Usability testing', 'Vibe coding'], visual: 'develop' },
+      { number: '04', title: 'Deliver', description: 'Ship polished designs with clear documentation, handoff specs, and measurable outcomes.', surface: 'bg-blue', tags: ['Design system', 'Dev handoff', 'QA review'], visual: 'deliver' },
+    ];
+
+const ui = lang === 'zh'
+  ? { eyebrow: '流程', heading: '我的工作方式', blurb: '結構化且具彈性的旅程 — 從第一個提問到產品上線。', iterate: '持續迭代' }
+  : { eyebrow: 'Process', heading: 'How I work', blurb: 'A structured yet flexible journey — from first question to shipped product.', iterate: 'Iterate' };
+---
+
+<section id="process" class="py-20 md:py-28 bg-gradient-value relative overflow-visible">
+  {/* Bridge blob — peeks up into the section above for soft transition */}
+  <div
+    class="absolute -top-40 left-[12%] w-96 h-96 rounded-full bg-blue opacity-30 blur-2xl pointer-events-none"
+    aria-hidden="true"
+  ></div>
+
+  <div class="max-w-5xl mx-auto px-6 relative">
+    <div class="reveal max-w-2xl mb-12 md:mb-28">
+      <p class="text-xs font-medium text-accent uppercase tracking-[0.18em] mb-3 flex items-center gap-3">
+        <span class="inline-block w-8 h-px bg-accent"></span>
+        {ui.eyebrow}
+      </p>
+      <h2 class="text-3xl md:text-4xl font-semibold text-text-primary mb-4">
+        {ui.heading}
+      </h2>
+      <p class="text-text-secondary text-lg">
+        {ui.blurb}
+      </p>
+    </div>
+
+    {/* Journey map — stations riding a dotted wave (desktop) / vertical trail (mobile) */}
+    <div class="relative">
+      {/* Iterate loop — dashed arc from Deliver back to Define */}
+      <svg
+        class="hidden md:block absolute -top-14 left-[10%] w-[80%] h-16 text-text-tertiary pointer-events-none"
+        viewBox="0 0 960 64"
+        fill="none"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path d="M 930 58 C 700 -30, 260 -30, 36 50" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 6" opacity="0.55" />
+        <path d="M 46 38 L 34 52 L 52 54" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.55" />
+      </svg>
+      <p class="hidden md:block absolute -top-[4.5rem] left-1/2 -translate-x-1/2 text-[11px] font-medium tracking-[0.16em] uppercase text-text-tertiary" aria-hidden="true">
+        ↻ {ui.iterate}
+      </p>
+
+      {/* Dotted wave connector (desktop only) */}
+      <svg
+        class="hidden md:block absolute top-0 inset-x-0 w-full h-[136px] text-accent pointer-events-none"
+        viewBox="0 0 1200 136"
+        fill="none"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M 150 48 C 250 48, 350 96, 450 96 C 550 96, 650 48, 750 48 C 850 48, 950 96, 1050 96"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-dasharray="1 10"
+          stroke-linecap="round"
+          opacity="0.5"
+        />
+      </svg>
+
+      {/* Mobile vertical trail */}
+      <div class="md:hidden absolute left-7 top-4 bottom-8 border-l-2 border-dashed border-border" aria-hidden="true"></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-5">
+        {steps.map((step, i) => (
+          <article
+            class={`reveal relative flex md:flex-col items-start md:items-center gap-4 md:gap-0 md:text-center ${i % 2 === 1 ? 'md:translate-y-12' : ''}`}
+            style={`transition-delay: ${i * 120}ms`}
+            aria-label={`${step.number} ${step.title}`}
+          >
+            {/* Station circle */}
+            <div class="relative shrink-0">
+              <div class={`w-14 h-14 md:w-24 md:h-24 rounded-full ${step.surface} border-2 border-surface shadow-lg shadow-black/5 flex items-center justify-center text-text-primary transition-transform duration-500 hover:scale-110`}>
+                {step.visual === 'define' && (
+                  <svg class="w-6 h-6 md:w-10 md:h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3.5" y="5" width="17" height="14" rx="2"/>
+                    <line x1="6.5" y1="9" x2="15.5" y2="9"/>
+                    <line x1="6.5" y1="12" x2="17.5" y2="12"/>
+                    <line x1="6.5" y1="15" x2="13" y2="15"/>
+                    <circle cx="18" cy="6.5" r="1.4" fill="currentColor"/>
+                  </svg>
+                )}
+                {step.visual === 'discover' && (
+                  <svg class="w-6 h-6 md:w-10 md:h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="10.5" cy="10.5" r="6"/>
+                    <line x1="15" y1="15" x2="20" y2="20"/>
+                    <circle cx="9" cy="9.5" r="0.7" fill="currentColor"/>
+                    <circle cx="12" cy="9.5" r="0.7" fill="currentColor"/>
+                    <path d="M8.5 12 Q10.5 13.4 12.5 12" />
+                  </svg>
+                )}
+                {step.visual === 'develop' && (
+                  <svg class="w-6 h-6 md:w-10 md:h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3.5" y="4" width="10" height="14" rx="1.5"/>
+                    <rect x="11" y="7" width="9.5" height="13" rx="1.5" fill="var(--color-surface)"/>
+                    <line x1="13" y1="11" x2="18.5" y2="11"/>
+                    <line x1="13" y1="13.5" x2="17" y2="13.5"/>
+                  </svg>
+                )}
+                {step.visual === 'deliver' && (
+                  <svg class="w-6 h-6 md:w-10 md:h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 12 L10 17 L19.5 7"/>
+                  </svg>
+                )}
+              </div>
+              {/* Step number badge */}
+              <span class="absolute -top-1 -right-1 md:-top-1.5 md:-right-1.5 inline-flex items-center justify-center w-6 h-6 md:w-8 md:h-8 rounded-full bg-text-primary text-surface text-[10px] md:text-xs font-bold shadow-sm">
+                {step.number}
+              </span>
+            </div>
+
+            {/* Station content */}
+            <div class="md:mt-5 flex-1 min-w-0">
+              <h3 class="text-lg md:text-xl font-semibold text-text-primary mb-1.5">{step.title}</h3>
+              <p class="text-sm text-text-secondary leading-relaxed mb-3">{step.description}</p>
+              <div class="flex flex-wrap md:justify-center gap-1.5">
+                {step.tags.map((tag) => (
+                  <span class={`text-[11px] font-medium text-text-primary ${step.surface} px-2.5 py-0.5 rounded-full border border-text-primary/10`}>{tag}</span>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
