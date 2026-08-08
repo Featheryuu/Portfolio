@@ -23,10 +23,14 @@ const ui = lang === 'zh'
   : { eyebrow: 'Process', heading: 'How I work', blurb: 'A structured yet flexible journey — from first question to shipped product.', iterate: 'Iterate' };
 ---
 
-<section id="process" class="py-20 md:py-28 bg-gradient-value relative overflow-visible">
+<section
+  id="process"
+  class="py-20 md:py-28 relative overflow-visible"
+  style="background: linear-gradient(180deg, var(--color-bg-primary) 0%, #FFFDFD 45%, var(--color-bg-primary) 100%);"
+>
   {/* Bridge blob — peeks up into the section above for soft transition */}
   <div
-    class="absolute -top-40 left-[12%] w-96 h-96 rounded-full bg-blue opacity-30 blur-2xl pointer-events-none"
+    class="absolute -top-40 left-[12%] w-96 h-96 rounded-full bg-blue opacity-[0.12] blur-2xl pointer-events-none"
     aria-hidden="true"
   ></div>
 

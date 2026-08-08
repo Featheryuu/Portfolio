@@ -24,9 +24,6 @@ const t = lang === 'zh'
         { surface: 'bg-orange', title: '以思考的速度做原型', body: '運用生成式工具，一天內從低擬真概念到可點擊、可測試的原型 — 更多迭代，更早獲得真實使用者回饋。', icon: icons.prototype },
         { surface: 'bg-blue', title: '負責任的 AI 應用', body: '我清楚 AI 在哪裡幫得上忙、哪裡可能造成傷害：隱私、偏誤與無障礙審查，是每一個 AI 輔助交付物的必要環節。', icon: icons.shield },
       ],
-      proofLead: '實際證明：',
-      proofText: '這個網站由我設計，並與 AI 結對編程完成',
-      tools: ['Claude Code', 'Cursor', 'Figma AI', 'Astro + Tailwind'],
     }
   : {
       eyebrow: 'AI × Design',
@@ -40,9 +37,6 @@ const t = lang === 'zh'
         { surface: 'bg-orange', title: 'Prototyping at speed', body: 'From lo-fi concept to a clickable, testable prototype in a day using generative tools — more iterations, earlier real-user feedback.', icon: icons.prototype },
         { surface: 'bg-blue', title: 'Responsible by design', body: 'I know where AI helps and where it harms: privacy, bias, and accessibility reviews are part of every AI-assisted deliverable.', icon: icons.shield },
       ],
-      proofLead: 'Proof:',
-      proofText: 'this site was designed by me and pair-programmed with AI',
-      tools: ['Claude Code', 'Cursor', 'Figma AI', 'Astro + Tailwind'],
     };
 ---
 
@@ -65,7 +59,7 @@ const t = lang === 'zh'
     </div>
 
     {/* 2x2 grid — icon tile + content, mirrors ValueProp rhythm */}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 mb-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
       {t.cards.map((card, i) => (
         <div
           class="reveal flex gap-5 rounded-2xl border border-border bg-surface p-6 md:p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-text-tertiary/30"
@@ -88,17 +82,5 @@ const t = lang === 'zh'
       ))}
     </div>
 
-    {/* Proof strip */}
-    <div class="reveal flex flex-wrap items-center gap-x-3 gap-y-3 rounded-2xl border border-border bg-bg-secondary px-6 py-5">
-      <p class="text-sm text-text-primary">
-        <span class="font-semibold">{t.proofLead}</span>
-        {' '}{t.proofText}
-      </p>
-      <div class="flex flex-wrap gap-1.5 sm:ml-auto">
-        {t.tools.map((tool) => (
-          <span class="text-xs font-medium text-text-secondary bg-surface border border-border px-2.5 py-1 rounded-full">{tool}</span>
-        ))}
-      </div>
-    </div>
   </div>
 </section>
