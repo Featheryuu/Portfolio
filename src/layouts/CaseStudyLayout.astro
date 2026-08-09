@@ -53,7 +53,7 @@ const ui = lang === 'zh'
   <div class="max-w-4xl mx-auto px-6 pt-8">
     <a
       href={ui.backHref}
-      class="inline-flex items-center gap-1 text-sm text-text-tertiary hover:text-text-primary transition-colors"
+      class="inline-flex items-center min-h-11 gap-1 text-sm text-text-tertiary hover:text-text-primary transition-colors"
     >
       <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -239,7 +239,7 @@ const ui = lang === 'zh'
       {prevProject ? (
         <a
           href={prevProject.href}
-          class="group flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors"
+          class="group flex items-center min-h-11 gap-2 text-text-secondary hover:text-text-primary transition-colors"
         >
           <svg class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
@@ -250,7 +250,7 @@ const ui = lang === 'zh'
       {nextProject ? (
         <a
           href={nextProject.href}
-          class="group flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors sm:ml-auto"
+          class="group flex items-center min-h-11 gap-2 text-text-secondary hover:text-text-primary transition-colors sm:ml-auto"
         >
           <span class="text-sm">{nextProject.title}</span>
           <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">

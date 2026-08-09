@@ -23,7 +23,7 @@ const ui = lang === 'zh'
   : { eyebrow: 'Process', heading: 'How I work', blurb: 'A structured yet flexible approach — auto-stepping from define to deliver.', goToStep: (n: string, title: string) => `Go to step ${n} ${title}`, stepLabel: (n: string, title: string) => `Step ${n}: ${title}` };
 ---
 
-<section id="process" class="py-20 md:py-28 bg-gradient-value relative overflow-visible">
+<section id="process" class="py-20 md:py-28 bg-gradient-value relative overflow-x-clip">
   {/* Bridge blob — peeks up into the section above for soft transition */}
   <div
     class="absolute -top-40 left-[12%] w-96 h-96 rounded-full bg-blue opacity-30 blur-2xl pointer-events-none"
