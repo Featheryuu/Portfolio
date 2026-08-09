@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://chiayingtsai.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://chiayingtsai.com/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://chiayingtsai.com/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chiayingtsai.com/"/>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://chiayingtsai.com/work/my-heathrow</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://chiayingtsai.com/work/my-heathrow"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://chiayingtsai.com/zh/work/my-heathrow"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chiayingtsai.com/work/my-heathrow"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://chiayingtsai.com/work/kinship</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://chiayingtsai.com/work/kinship"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://chiayingtsai.com/zh/work/kinship"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chiayingtsai.com/work/kinship"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://chiayingtsai.com/work/cornershop</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://chiayingtsai.com/work/cornershop"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://chiayingtsai.com/zh/work/cornershop"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chiayingtsai.com/work/cornershop"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://chiayingtsai.com/zh/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://chiayingtsai.com/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://chiayingtsai.com/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chiayingtsai.com/"/>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://chiayingtsai.com/zh/work/my-heathrow</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://chiayingtsai.com/work/my-heathrow"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://chiayingtsai.com/zh/work/my-heathrow"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chiayingtsai.com/work/my-heathrow"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://chiayingtsai.com/zh/work/kinship</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://chiayingtsai.com/work/kinship"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://chiayingtsai.com/zh/work/kinship"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chiayingtsai.com/work/kinship"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://chiayingtsai.com/zh/work/cornershop</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://chiayingtsai.com/work/cornershop"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://chiayingtsai.com/zh/work/cornershop"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://chiayingtsai.com/work/cornershop"/>
+    <priority>0.8</priority>
+  </url>
+</urlset>

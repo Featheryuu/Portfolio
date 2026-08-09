@@ -12,14 +12,24 @@ interface Props {
 
 const {
   title,
-  description = "I am an interdisciplinary designer, creating solutions for users and advocating for inclusive design.",
   ogImage = "/images/og-default.jpg",
   lang = 'en',
 } = Astro.props;
 
+const description = Astro.props.description ?? (lang === 'zh'
+  ? '產品設計師蔡佳穎 — 把複雜的問題做成人們信任的產品：企業平台、公共服務，以及符合無障礙標準的介面。'
+  : 'Product designer turning complex problems into products people trust — enterprise platforms, public services, and accessible, WCAG-compliant interfaces.');
+
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site);
 const htmlLang = lang === 'zh' ? 'zh-Hant' : 'en';
+
+// Each page has a twin in the other language — link them for search engines.
+const path = Astro.url.pathname;
+const enPath = path.startsWith('/zh') ? (path.replace(/^\/zh/, '') || '/') : path;
+const zhPath = path.startsWith('/zh') ? path : ('/zh' + (path === '/' ? '/' : path));
+const enURL = new URL(enPath, Astro.site);
+const zhURL = new URL(zhPath, Astro.site);
 ---
 
 <!DOCTYPE html>
@@ -33,9 +43,13 @@ const htmlLang = lang === 'zh' ? 'zh-Hant' : 'en';
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang="en" href={enURL} />
+    <link rel="alternate" hreflang="zh-Hant" href={zhURL} />
+    <link rel="alternate" hreflang="x-default" href={enURL} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content={lang === 'zh' ? 'zh_TW' : 'en_GB'} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

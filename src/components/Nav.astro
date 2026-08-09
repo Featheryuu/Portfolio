@@ -20,9 +20,10 @@ const navItems = lang === 'zh'
     ];
 
 // Language switch — points to the equivalent page in the other language
+const here = Astro.url.pathname;
 const altLang = lang === 'zh'
-  ? { label: 'EN', href: '/' }
-  : { label: '中文', href: '/zh/' };
+  ? { label: 'EN', href: here.replace(/^\/zh/, '') || '/' }
+  : { label: '中文', href: '/zh' + (here === '/' ? '/' : here) };
 const homeHref = lang === 'zh' ? '/zh/' : '/';
 ---
 
