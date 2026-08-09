@@ -48,7 +48,7 @@ const ui = lang === 'zh'
   : { back: 'Back to work', backHref: '/#work', project: 'Project', client: 'Client', role: 'Role', year: 'Year', team: 'Team' };
 ---
 
-<BaseLayout title={`${title} — Chia-Ying Tsai`} description={description} lang={lang}>
+<BaseLayout title={`${title} — Chia-Ying Tsai`} description={description} lang={lang} ogImage={heroImage}>
   {/* Back navigation */}
   <div class="max-w-4xl mx-auto px-6 pt-8">
     <a
@@ -148,7 +148,7 @@ const ui = lang === 'zh'
     aria-hidden="true"
     inert
   >
-    <img id="lightbox-img" src="" alt="" />
+    <img id="lightbox-img" alt="" />
     <button
       id="lightbox-close"
       type="button"

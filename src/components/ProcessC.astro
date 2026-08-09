@@ -128,15 +128,14 @@ const ui = lang === 'zh'
                   </svg>
                 )}
               </div>
-              {/* Step number badge */}
-              <span class="absolute -top-1 -right-1 md:-top-1.5 md:-right-1.5 inline-flex items-center justify-center w-6 h-6 md:w-8 md:h-8 rounded-full bg-text-primary text-surface text-[10px] md:text-xs font-bold shadow-sm">
-                {step.number}
-              </span>
             </div>
 
             {/* Station content */}
             <div class="md:mt-5 flex-1 min-w-0">
-              <h3 class="text-lg md:text-xl font-semibold text-text-primary mb-1.5">{step.title}</h3>
+              <h3 class="text-lg md:text-xl font-semibold text-text-primary mb-1.5 flex items-baseline gap-2 md:justify-center">
+                <span class="text-sm font-bold text-text-tertiary tabular-nums shrink-0">{step.number}</span>
+                <span>{step.title}</span>
+              </h3>
               <p class="text-sm text-text-secondary leading-relaxed mb-3">{step.description}</p>
               <div class="flex flex-wrap md:justify-center gap-1.5">
                 {step.tags.map((tag) => (

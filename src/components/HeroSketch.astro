@@ -1,0 +1,410 @@
+---
+interface Props {
+  variant?: 'squiggle' | 'squiggle2' | 'hybrid' | 'synthesis' | 'craft' | 'system' | 'system2' | 'system3';
+  /** Line quality: fine pencil, or a broad felt-tip marker */
+  stroke?: 'fine' | 'pencil' | 'soft' | 'ink' | 'marker';
+  /** What the lower branch of the hybrid sketch delivers */
+  outcome?: 'metrics' | 'system' | 'surfaces' | 'people';
+  lang?: 'en' | 'zh';
+  /** Unique suffix so multiple sketches on one page don't share filter ids */
+  uid?: string;
+}
+const { variant = 'squiggle', lang = 'en', uid = variant, stroke = 'pencil', outcome = 'metrics' } = Astro.props;
+const fid = `ink-${uid}`;
+
+// Marker lays down a broader, smoother line; pencil is finer and wobblier.
+const STROKES = {
+  // hard pencil — thin, scratchy
+  fine:   { main: 1.7, mid: 1.5, thin: 1.3, hair: 1.1, disp: 3.6, freq: 0.042, alpha: 0.85 },
+  // HB pencil — the current default
+  pencil: { main: 2.6, mid: 2.2, thin: 1.8, hair: 1.6, disp: 3,   freq: 0.03,  alpha: 1 },
+  // soft graphite — heavier, looser
+  soft:   { main: 3.6, mid: 3,   thin: 2.4, hair: 2,   disp: 3.4, freq: 0.024, alpha: 0.95 },
+  // fineliner — thin but steady, almost no wobble
+  ink:    { main: 2,   mid: 1.8, thin: 1.5, hair: 1.3, disp: 0.7, freq: 0.02,  alpha: 1 },
+  // felt-tip marker — broad and smooth
+  marker: { main: 5.2, mid: 4.2, thin: 2.8, hair: 2.2, disp: 1.5, freq: 0.013, alpha: 0.92 },
+};
+const W = STROKES[stroke] ?? STROKES.pencil;
+
+const L = lang === 'zh'
+  ? {
+      squiggle: { start: '混沌', end: '上線', n1: '研究', n2: '測試', n3: '交付', alt: '手繪示意圖：雜亂的線條逐漸收斂為一條清晰的線' },
+      synthesis: { start: '訊號', end: '主題', alt: '手繪示意圖：散落的便利貼被整理成清晰的主題' },
+      craft: { start: '草圖', end: '介面', alt: '手繪示意圖：粗略草圖演變為完成的介面' },
+      system: { label: '一套系統', alt: '手繪示意圖：相互連結的節點構成一套完整系統' },
+      squiggle2: { start: '起點', end: '成果', alt: '手繪示意圖：纏繞的線條向右上方逐漸展開為清晰的方向' },
+      system2: { label: '一套系統', alt: '手繪示意圖：以手繪波浪線相連的節點構成一套系統' },
+      hybrid: { start: '過程', end: '上線', alt: '手繪示意圖：雜亂的線條收斂後，分為介面與成效兩個方向' },
+      system3: { start: '過程', end: '上線介面', alt: '手繪示意圖：纏繞的線條收斂為相互連結的系統節點' },
+    }
+  : {
+      squiggle: { start: 'messy', end: 'shipped', n1: 'research', n2: 'test', n3: 'ship', alt: 'Hand-drawn illustration: a tangle of lines resolving into one clear line' },
+      synthesis: { start: 'signals', end: 'themes', alt: 'Hand-drawn illustration: scattered notes organised into clear themes' },
+      craft: { start: 'sketch', end: 'interface', alt: 'Hand-drawn illustration: a rough sketch becoming a finished interface' },
+      system: { label: 'one system', alt: 'Hand-drawn illustration: connected nodes forming one coherent system' },
+      squiggle2: { start: 'start', end: 'outcome', alt: 'Hand-drawn illustration: a tangle unwinding upward into a clear direction' },
+      system2: { label: 'one system', alt: 'Hand-drawn illustration: nodes joined by hand-drawn wavy connections' },
+      hybrid: { start: 'process', end: 'shipped', alt: 'Hand-drawn illustration: a tangle resolving then branching into a shipped interface and measurable impact' },
+      system3: { start: 'process', end: 'shipped', alt: 'Hand-drawn illustration: a tangle resolving into connected system nodes' },
+    };
+
+const alt = L[variant].alt;
+---
+
+<svg class="w-full h-auto sketch" viewBox="0 0 520 300" fill="none" role="img" aria-label={alt}>
+  <defs>
+    <filter id={fid} x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency={W.freq} numOctaves="3" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale={W.disp} xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+
+  {variant === 'squiggle' && (
+    <>
+      <g filter={`url(#${fid})`}>
+        <path d="M78 96 C 56 84, 50 122, 70 138 C 92 155, 128 136, 122 112 C 118 92, 98 90, 78 96 Z" class="fill-[var(--color-pink)]" opacity="0.5"/>
+        <path d="M232 206 C 212 199, 204 228, 222 238 C 243 250, 268 233, 262 216 C 256 201, 246 202, 232 206 Z" class="fill-[var(--color-orange)]" opacity="0.42"/>
+        <path d="M392 88 C 373 83, 365 111, 382 121 C 401 132, 425 117, 419 101 C 414 87, 405 86, 392 88 Z" class="fill-[var(--color-blue)]" opacity="0.45"/>
+        <path
+          d="M46 168 C 22 134, 48 98, 82 111 C 116 123, 94 177, 60 170 C 26 163, 35 111, 71 98
+             C 107 86, 132 134, 105 166 C 78 199, 40 172, 56 134 C 72 97, 130 99, 139 138
+             C 148 178, 105 200, 89 172 C 73 143, 114 115, 152 129 C 190 143, 174 195, 143 191
+             C 112 187, 129 137, 170 137 C 211 137, 218 185, 193 191 C 168 196, 179 149, 215 151
+             C 251 153, 253 183, 238 185 C 224 187, 235 158, 267 161 C 299 164, 301 177, 288 178
+             C 276 179, 287 166, 316 168 C 344 170, 348 173, 341 174 C 334 175, 344 170, 369 171 L 470 171"
+          stroke="var(--color-text-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="squiggle"/>
+        <path d="M454 159 L 474 171 L 454 183" stroke="var(--color-text-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="squiggle-arrow"/>
+        <path d="M386 186 C 411 192, 439 190, 466 185" stroke="var(--color-accent)" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/>
+        <path d="M170 74 l0 -14 M163 67 l14 0" stroke="var(--color-text-primary)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+        <circle cx="432" cy="128" r="4" class="fill-[var(--color-yellow)]" stroke="var(--color-text-primary)" stroke-width="1.6"/>
+      </g>
+      <text x="42" y="230" class="sk-label" fill="var(--color-text-tertiary)">{L.squiggle.start}</text>
+      <text x="412" y="216" class="sk-label" fill="var(--color-text-tertiary)">{L.squiggle.end}</text>
+      <g class="sk-note" style="rotate:-3deg">
+        <path d="M196 84 h72 v30 h-72 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width="1.7" filter={`url(#${fid})`}/>
+        <text x="232" y="103" text-anchor="middle" class="sk-note-text" fill="var(--color-text-primary)">{L.squiggle.n1}</text>
+      </g>
+      <g class="sk-note" style="rotate:2.5deg">
+        <path d="M288 250 h58 v30 h-58 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width="1.7" filter={`url(#${fid})`}/>
+        <text x="317" y="269" text-anchor="middle" class="sk-note-text" fill="var(--color-text-primary)">{L.squiggle.n2}</text>
+      </g>
+      <g class="sk-note" style="rotate:-2deg">
+        <path d="M420 62 h58 v30 h-58 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width="1.7" filter={`url(#${fid})`}/>
+        <text x="449" y="81" text-anchor="middle" class="sk-note-text" fill="var(--color-text-primary)">{L.squiggle.n3}</text>
+      </g>
+    </>
+  )}
+
+  {variant === 'hybrid' && (
+    <g filter={`url(#${fid})`} opacity={W.alpha}>
+      <path d="M86 112 C 60 100, 52 144, 76 162 C 102 181, 142 160, 136 134 C 131 112, 108 105, 86 112 Z" class="fill-[var(--color-pink)] sk-step1" opacity="0.35"/>
+
+      {/* 1 — the process draws itself */}
+      <path
+        d="M30 168 C 4 130, 34 88, 74 102 C 114 116, 92 178, 52 170 C 12 162, 22 100, 62 86
+           C 102 72, 132 128, 102 166 C 72 204, 28 176, 46 130 C 64 84, 130 88, 140 132
+           C 150 176, 104 200, 88 170 C 72 140, 118 108, 158 124 C 198 140, 180 196, 146 191
+           C 112 186, 130 132, 174 132 C 218 132, 226 182, 200 188 C 174 194, 186 146, 224 149
+           C 258 152, 262 176, 248 178 C 234 180, 244 156, 272 158 C 292 160, 296 160, 306 159"
+        stroke="var(--color-text-primary)" stroke-width={W.main} stroke-linecap="round" stroke-linejoin="round" class="sq-main"/>
+
+      {/* 2 — it resolves at the junction */}
+      <circle cx="312" cy="159" r={W.main + 3} class="fill-[var(--color-yellow)] sk-step2" stroke="var(--color-text-primary)" stroke-width={W.mid}/>
+
+      {/* 3 — two branches reach out */}
+      <path d="M318 150 C 336 130, 352 112, 372 104" stroke="var(--color-text-primary)" stroke-width={W.mid} stroke-linecap="round" class="sq-branch"/>
+      <path d="M318 168 C 336 188, 352 206, 372 214" stroke="var(--color-text-primary)" stroke-width={W.mid} stroke-linecap="round" class="sq-branch"/>
+
+      {/* 4 — only then do the artefacts appear */}
+      <g class="sk-artifacts">
+        <path d="M382 58 h116 v92 h-116 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width={W.mid}/>
+        <path d="M382 58 h116 v20 h-116 Z" class="fill-[var(--color-blue)]" stroke="var(--color-text-primary)" stroke-width={W.mid}/>
+        <circle cx="393" cy="68" r="3" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width={W.hair - 0.4}/>
+        <circle cx="404" cy="68" r="3" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width={W.hair - 0.4}/>
+        <path d="M392 88 h46 v26 h-46 Z" class="fill-[var(--color-yellow)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+        <path d="M446 88 h42 v26 h-42 Z" class="fill-[var(--color-pink)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+        <path d="M392 126 h96 M392 137 h68" stroke="var(--color-text-primary)" stroke-width={W.hair} stroke-linecap="round" opacity="0.5"/>
+
+        {outcome === 'metrics' && (
+          <>
+            <path d="M382 172 h116 v78 h-116 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width={W.mid}/>
+            <path d="M392 232 h16 v12 h-16 Z" class="fill-[var(--color-orange)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+            <path d="M416 220 h16 v24 h-16 Z" class="fill-[var(--color-orange)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+            <path d="M440 206 h16 v38 h-16 Z" class="fill-[var(--color-yellow)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+            <path d="M464 192 h16 v52 h-16 Z" class="fill-[var(--color-blue)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+            <path d="M392 200 C 414 202, 434 188, 452 178 C 468 170, 478 186, 490 180" stroke="var(--color-accent)" stroke-width={W.mid} stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </>
+        )}
+
+        {outcome === 'system' && (
+          <>
+            <path d="M382 172 h116 v78 h-116 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width={W.mid}/>
+            <circle cx="400" cy="194" r="9" class="fill-[var(--color-pink)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+            <circle cx="424" cy="194" r="9" class="fill-[var(--color-orange)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+            <circle cx="448" cy="194" r="9" class="fill-[var(--color-yellow)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+            <circle cx="472" cy="194" r="9" class="fill-[var(--color-blue)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+            <path d="M392 214 h46 v14 h-46 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+            <path d="M446 214 h42 v14 h-42 Z" class="fill-[var(--color-accent)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+            <path d="M392 238 h60 M460 238 h28" stroke="var(--color-text-primary)" stroke-width={W.hair} stroke-linecap="round" opacity="0.5"/>
+          </>
+        )}
+
+        {outcome === 'surfaces' && (
+          <>
+            <path d="M382 176 h64 v70 h-64 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width={W.mid}/>
+            <path d="M382 176 h64 v12 h-64 Z" class="fill-[var(--color-yellow)]" stroke="var(--color-text-primary)" stroke-width={W.mid}/>
+            <path d="M390 198 h48 M390 210 h34 M390 222 h44" stroke="var(--color-text-primary)" stroke-width={W.hair} stroke-linecap="round" opacity="0.5"/>
+            <path d="M390 232 h26 v10 h-26 Z" class="fill-[var(--color-accent)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+            <path d="M460 172 h38 v78 h-38 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width={W.mid} rx="6"/>
+            <path d="M472 179 h14" stroke="var(--color-text-primary)" stroke-width={W.hair} stroke-linecap="round"/>
+            <path d="M466 190 h26 v18 h-26 Z" class="fill-[var(--color-pink)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+            <path d="M466 216 h26 M466 226 h18" stroke="var(--color-text-primary)" stroke-width={W.hair} stroke-linecap="round" opacity="0.5"/>
+            <path d="M466 234 h26 v9 h-26 Z" class="fill-[var(--color-accent)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+          </>
+        )}
+
+        {outcome === 'people' && (
+          <>
+            <circle cx="404" cy="192" r="12" class="fill-[var(--color-pink)]" stroke="var(--color-text-primary)" stroke-width={W.mid}/>
+            <path d="M386 232 C 386 210, 422 210, 422 232" stroke="var(--color-text-primary)" stroke-width={W.mid} stroke-linecap="round" fill="none"/>
+            <circle cx="442" cy="186" r="13" class="fill-[var(--color-yellow)]" stroke="var(--color-text-primary)" stroke-width={W.mid}/>
+            <path d="M422 230 C 422 205, 462 205, 462 230" stroke="var(--color-text-primary)" stroke-width={W.mid} stroke-linecap="round" fill="none"/>
+            <circle cx="478" cy="192" r="12" class="fill-[var(--color-blue)]" stroke="var(--color-text-primary)" stroke-width={W.mid}/>
+            <path d="M460 232 C 460 210, 496 210, 496 232" stroke="var(--color-text-primary)" stroke-width={W.mid} stroke-linecap="round" fill="none"/>
+            <path d="M436 160 C 430 150, 442 144, 448 152 C 454 144, 466 150, 460 160 C 456 167, 448 172, 448 172 C 448 172, 440 167, 436 160 Z" class="fill-[var(--color-orange)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+          </>
+        )}
+      </g>
+
+      {/* 5 — caption row last */}
+      <g class="sk-caption">
+        <path d="M52 258 C 106 268, 178 266, 248 256" stroke="var(--color-accent)" stroke-width={W.mid} stroke-linecap="round" opacity="0.5"/>
+        <path d="M374 258 C 418 268, 468 266, 508 256" stroke="var(--color-accent)" stroke-width={W.mid} stroke-linecap="round" opacity="0.75"/>
+        <text x="150" y="286" text-anchor="middle" class="sk-label" fill="var(--color-text-tertiary)">{L.hybrid.start}</text>
+        <path d="M274 281 L 322 281 M313 275 L 324 281 L 313 287" stroke="var(--color-text-tertiary)" stroke-width={W.thin} stroke-linecap="round" stroke-linejoin="round" opacity="0.65" fill="none"/>
+        <text x="442" y="286" text-anchor="middle" class="sk-label" fill="var(--color-text-tertiary)">{L.hybrid.end}</text>
+      </g>
+    </g>
+  )}
+
+  {variant === 'synthesis' && (
+    <g filter={`url(#${fid})`}>
+      {/* scattered notes */}
+      <path d="M34 74 h58 v50 h-58 Z" class="fill-[var(--color-pink)]" stroke="var(--color-text-primary)" stroke-width="1.8" style="rotate:-8deg; transform-origin:63px 99px"/>
+      <path d="M100 46 h58 v50 h-58 Z" class="fill-[var(--color-yellow)]" stroke="var(--color-text-primary)" stroke-width="1.8" style="rotate:6deg; transform-origin:129px 71px"/>
+      <path d="M52 148 h58 v50 h-58 Z" class="fill-[var(--color-blue)]" stroke="var(--color-text-primary)" stroke-width="1.8" style="rotate:4deg; transform-origin:81px 173px"/>
+      <path d="M118 132 h58 v50 h-58 Z" class="fill-[var(--color-orange)]" stroke="var(--color-text-primary)" stroke-width="1.8" style="rotate:-5deg; transform-origin:147px 157px"/>
+      <path d="M74 216 h58 v50 h-58 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width="1.8" style="rotate:9deg; transform-origin:103px 241px"/>
+      {/* squiggly text lines on a couple of notes */}
+      <path d="M44 92 h36 M44 102 h26" stroke="var(--color-text-primary)" stroke-width="1.5" stroke-linecap="round" opacity="0.45"/>
+      <path d="M128 152 h36 M128 162 h22" stroke="var(--color-text-primary)" stroke-width="1.5" stroke-linecap="round" opacity="0.45"/>
+      {/* sorting arrow */}
+      <path d="M204 150 C 236 128, 250 176, 288 152" stroke="var(--color-text-primary)" stroke-width="2.4" stroke-linecap="round" class="squiggle"/>
+      <path d="M274 141 L 292 151 L 275 163" stroke="var(--color-text-primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="squiggle-arrow"/>
+      {/* tidy grid */}
+      <path d="M320 84 h74 v46 h-74 Z" class="fill-[var(--color-pink)]" stroke="var(--color-text-primary)" stroke-width="1.8"/>
+      <path d="M406 84 h74 v46 h-74 Z" class="fill-[var(--color-yellow)]" stroke="var(--color-text-primary)" stroke-width="1.8"/>
+      <path d="M320 144 h74 v46 h-74 Z" class="fill-[var(--color-orange)]" stroke="var(--color-text-primary)" stroke-width="1.8"/>
+      <path d="M406 144 h74 v46 h-74 Z" class="fill-[var(--color-blue)]" stroke="var(--color-text-primary)" stroke-width="1.8"/>
+      <path d="M332 102 h44 M332 112 h30" stroke="var(--color-text-primary)" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+      <path d="M418 102 h44 M418 112 h30" stroke="var(--color-text-primary)" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+      <path d="M332 162 h44 M332 172 h30" stroke="var(--color-text-primary)" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+      <path d="M418 162 h44 M418 172 h30" stroke="var(--color-text-primary)" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+      <path d="M320 212 C 372 222, 430 220, 480 210" stroke="var(--color-accent)" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/>
+      <text x="42" y="288" class="sk-label" fill="var(--color-text-tertiary)">{L.synthesis.start}</text>
+      <text x="392" y="242" class="sk-label" fill="var(--color-text-tertiary)">{L.synthesis.end}</text>
+    </g>
+  )}
+
+  {variant === 'craft' && (
+    <g filter={`url(#${fid})`}>
+      {/* rough wireframe */}
+      <path d="M32 56 h190 v192 h-190 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width="2.2" style="rotate:-2deg; transform-origin:127px 152px"/>
+      <g style="rotate:-2deg; transform-origin:127px 152px">
+        <path d="M48 78 h58 v30 h-58 Z" stroke="var(--color-text-primary)" stroke-width="1.7" class="fill-[var(--color-pink)]" opacity="0.65"/>
+        <path d="M118 82 h84 M118 94 h64" stroke="var(--color-text-primary)" stroke-width="1.7" stroke-linecap="round" opacity="0.55"/>
+        <path d="M48 126 h154 M48 140 h132 M48 154 h96" stroke="var(--color-text-primary)" stroke-width="1.6" stroke-linecap="round" opacity="0.4"/>
+        <path d="M48 176 h60 v22 h-60 Z" stroke="var(--color-text-primary)" stroke-width="1.7"/>
+        <path d="M48 214 C 84 208, 120 220, 156 212" stroke="var(--color-text-primary)" stroke-width="1.6" stroke-linecap="round" opacity="0.35"/>
+      </g>
+      {/* arrow */}
+      <path d="M242 150 C 258 138, 268 164, 286 152" stroke="var(--color-text-primary)" stroke-width="2.4" stroke-linecap="round" class="squiggle"/>
+      <path d="M272 142 L 290 151 L 273 163" stroke="var(--color-text-primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="squiggle-arrow"/>
+      {/* resolved interface */}
+      <path d="M306 44 h182 v212 h-182 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width="2.2"/>
+      <path d="M306 44 h182 v30 h-182 Z" class="fill-[var(--color-blue)]" stroke="var(--color-text-primary)" stroke-width="2.2"/>
+      <circle cx="320" cy="59" r="4" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width="1.4"/>
+      <circle cx="334" cy="59" r="4" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width="1.4"/>
+      <path d="M322 90 h66 v42 h-66 Z" class="fill-[var(--color-yellow)]" stroke="var(--color-text-primary)" stroke-width="1.7"/>
+      <path d="M400 90 h72 v42 h-72 Z" class="fill-[var(--color-pink)]" stroke="var(--color-text-primary)" stroke-width="1.7"/>
+      <path d="M322 148 h150 M322 162 h124 M322 176 h96" stroke="var(--color-text-primary)" stroke-width="1.7" stroke-linecap="round" opacity="0.5"/>
+      <path d="M322 200 h74 v26 h-74 Z" class="fill-[var(--color-accent)]" stroke="var(--color-text-primary)" stroke-width="1.7"/>
+      <path d="M312 272 C 358 280, 434 278, 484 268" stroke="var(--color-accent)" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/>
+      <text x="40" y="286" class="sk-label" fill="var(--color-text-tertiary)">{L.craft.start}</text>
+      <text x="398" y="292" class="sk-label" fill="var(--color-text-tertiary)">{L.craft.end}</text>
+    </g>
+  )}
+
+  {variant === 'system' && (
+    <g filter={`url(#${fid})`}>
+      {/* connections drawn first so nodes sit on top */}
+      <path d="M104 96 C 158 78, 208 88, 246 108" stroke="var(--color-text-primary)" stroke-width="2.1" stroke-linecap="round" class="squiggle"/>
+      <path d="M246 132 C 210 168, 152 172, 112 158" stroke="var(--color-text-primary)" stroke-width="2.1" stroke-linecap="round" class="squiggle"/>
+      <path d="M296 118 C 344 106, 386 118, 412 96" stroke="var(--color-text-primary)" stroke-width="2.1" stroke-linecap="round" class="squiggle"/>
+      <path d="M296 136 C 342 158, 380 176, 414 196" stroke="var(--color-text-primary)" stroke-width="2.1" stroke-linecap="round" class="squiggle"/>
+      <path d="M112 178 C 172 216, 268 228, 388 212" stroke="var(--color-text-primary)" stroke-width="2.1" stroke-linecap="round" stroke-dasharray="6 8" opacity="0.55"/>
+      {/* nodes */}
+      <circle cx="76" cy="88" r="30" class="fill-[var(--color-pink)]" stroke="var(--color-text-primary)" stroke-width="2.2"/>
+      <circle cx="80" cy="168" r="27" class="fill-[var(--color-yellow)]" stroke="var(--color-text-primary)" stroke-width="2.2"/>
+      <path d="M244 92 h56 v56 h-56 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width="2.4"/>
+      <path d="M258 112 h28 M258 124 h20" stroke="var(--color-text-primary)" stroke-width="1.8" stroke-linecap="round" opacity="0.55"/>
+      <circle cx="440" cy="86" r="28" class="fill-[var(--color-blue)]" stroke="var(--color-text-primary)" stroke-width="2.2"/>
+      <circle cx="438" cy="208" r="26" class="fill-[var(--color-orange)]" stroke="var(--color-text-primary)" stroke-width="2.2"/>
+      {/* node glyphs */}
+      <path d="M66 82 a10 10 0 1 0 0.1 0 M82 98 l8 8" stroke="var(--color-text-primary)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M70 162 h20 M70 172 h13" stroke="var(--color-text-primary)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M430 80 l7 8 l13 -15" stroke="var(--color-text-primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M428 214 l7 -9 l7 5 l9 -13" stroke="var(--color-text-primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M196 250 C 258 262, 336 258, 400 246" stroke="var(--color-accent)" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/>
+      <text x="228" y="278" class="sk-label" fill="var(--color-text-tertiary)">{L.system.label}</text>
+    </g>
+  )}
+
+  {variant === 'squiggle2' && (
+    <>
+      <g filter={`url(#${fid})`}>
+        <path d="M96 236 C 74 226, 66 258, 86 270 C 108 283, 138 266, 132 246 C 127 230, 112 230, 96 236 Z" class="fill-[var(--color-orange)]" opacity="0.45"/>
+        <path d="M392 78 C 373 72, 364 100, 382 111 C 402 123, 426 107, 420 90 C 415 76, 405 75, 392 78 Z" class="fill-[var(--color-yellow)]" opacity="0.5"/>
+        <path
+          d="M54 252 C 30 232, 50 202, 80 212 C 110 222, 92 258, 62 250 C 32 242, 42 204, 76 194
+             C 110 184, 132 218, 110 244 C 88 270, 56 250, 70 220 C 84 190, 132 190, 142 220
+             C 152 250, 120 268, 106 246 C 92 224, 126 200, 158 210 C 190 220, 186 254, 164 252
+             C 142 250, 152 214, 188 208 C 224 202, 240 226, 226 236 C 212 246, 204 222, 236 204
+             C 268 186, 288 190, 296 168 C 304 146, 288 138, 300 120 C 312 102, 344 108, 364 96
+             C 384 84, 404 78, 436 62 L 466 48"
+          stroke="var(--color-text-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="squiggle"/>
+        <path d="M444 46 L 470 44 L 466 70" stroke="var(--color-text-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="squiggle-arrow"/>
+        <path d="M328 156 C 356 146, 388 128, 420 108" stroke="var(--color-accent)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="5 8" opacity="0.6"/>
+        <path d="M214 112 l0 -14 M207 105 l14 0" stroke="var(--color-text-primary)" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+        <circle cx="278" cy="228" r="4" class="fill-[var(--color-pink)]" stroke="var(--color-text-primary)" stroke-width="1.6"/>
+        <circle cx="356" cy="184" r="3.4" class="fill-[var(--color-blue)]" stroke="var(--color-text-primary)" stroke-width="1.5"/>
+      </g>
+      <text x="40" y="290" class="sk-label" fill="var(--color-text-tertiary)">{L.squiggle2.start}</text>
+      <text x="416" y="106" class="sk-label" fill="var(--color-text-tertiary)">{L.squiggle2.end}</text>
+    </>
+  )}
+
+  {variant === 'system2' && (
+    <g filter={`url(#${fid})`}>
+      {/* squiggly hand-drawn connections */}
+      <path d="M106 92 C 132 66, 148 116, 174 88 C 198 62, 220 112, 244 100" stroke="var(--color-text-primary)" stroke-width="2.1" stroke-linecap="round" class="squiggle"/>
+      <path d="M246 136 C 224 162, 206 138, 190 164 C 174 190, 142 178, 114 162" stroke="var(--color-text-primary)" stroke-width="2.1" stroke-linecap="round" class="squiggle"/>
+      <path d="M300 112 C 326 88, 344 130, 370 106 C 390 88, 400 108, 414 92" stroke="var(--color-text-primary)" stroke-width="2.1" stroke-linecap="round" class="squiggle"/>
+      <path d="M298 140 C 320 166, 344 148, 364 174 C 382 196, 400 184, 414 196" stroke="var(--color-text-primary)" stroke-width="2.1" stroke-linecap="round" class="squiggle"/>
+      {/* a knot in the middle of one run — complexity being worked through */}
+      <path d="M150 214 C 132 200, 148 182, 166 192 C 184 202, 168 224, 150 214 Z" stroke="var(--color-text-primary)" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+      <path d="M110 180 C 126 198, 138 208, 150 214 M168 210 C 210 234, 300 236, 386 216" stroke="var(--color-text-primary)" stroke-width="2" stroke-linecap="round" stroke-dasharray="6 8" opacity="0.55"/>
+      {/* nodes */}
+      <circle cx="76" cy="86" r="30" class="fill-[var(--color-pink)]" stroke="var(--color-text-primary)" stroke-width="2.2"/>
+      <circle cx="80" cy="166" r="27" class="fill-[var(--color-yellow)]" stroke="var(--color-text-primary)" stroke-width="2.2"/>
+      <path d="M244 90 h56 v58 h-56 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width="2.4"/>
+      <path d="M258 112 h28 M258 124 h20" stroke="var(--color-text-primary)" stroke-width="1.8" stroke-linecap="round" opacity="0.55"/>
+      <circle cx="440" cy="84" r="28" class="fill-[var(--color-blue)]" stroke="var(--color-text-primary)" stroke-width="2.2"/>
+      <circle cx="438" cy="206" r="26" class="fill-[var(--color-orange)]" stroke="var(--color-text-primary)" stroke-width="2.2"/>
+      <path d="M66 80 a10 10 0 1 0 0.1 0 M82 96 l8 8" stroke="var(--color-text-primary)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M70 160 h20 M70 170 h13" stroke="var(--color-text-primary)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M430 78 l7 8 l13 -15" stroke="var(--color-text-primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M428 212 l7 -9 l7 5 l9 -13" stroke="var(--color-text-primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M196 262 C 258 274, 336 270, 400 258" stroke="var(--color-accent)" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/>
+      <text x="228" y="288" class="sk-label" fill="var(--color-text-tertiary)">{L.system2.label}</text>
+    </g>
+  )}
+
+  {variant === 'system3' && (
+    <g filter={`url(#${fid})`} opacity={W.alpha}>
+      <path d="M92 118 C 62 104, 54 152, 80 172 C 108 193, 152 170, 145 142 C 140 118, 116 110, 92 118 Z" class="fill-[var(--color-pink)]" opacity="0.38"/>
+      <path d="M176 196 C 152 188, 144 218, 164 230 C 186 243, 214 226, 208 208 C 202 192, 190 192, 176 196 Z" class="fill-[var(--color-orange)]" opacity="0.3"/>
+
+      {/* the messy part — larger, denser, dominating the left */}
+      <path
+        d="M34 176 C 4 128, 40 70, 88 86 C 136 102, 110 180, 60 172 C 10 164, 22 90, 70 72
+           C 118 54, 156 122, 120 170 C 84 218, 32 186, 50 132 C 68 78, 144 82, 158 136
+           C 172 190, 116 222, 96 182 C 76 142, 130 100, 178 120 C 226 140, 206 206, 166 200
+           C 126 194, 148 128, 196 130 C 244 132, 252 194, 220 200 C 188 206, 202 146, 244 150
+           C 280 154, 286 176, 272 180 C 258 184, 268 158, 292 158 L 302 157"
+        stroke="var(--color-text-primary)" stroke-width={W.main} stroke-linecap="round" stroke-linejoin="round" class="squiggle"/>
+
+      {/* junction where it resolves */}
+      <circle cx="308" cy="157" r="6" class="fill-[var(--color-yellow)]" stroke="var(--color-text-primary)" stroke-width={W.thin}/>
+
+      {/* branches into the outcome */}
+      <path d="M312 150 C 326 128, 336 108, 348 98" stroke="var(--color-text-primary)" stroke-width={W.mid} stroke-linecap="round" class="squiggle"/>
+      <path d="M312 164 C 326 186, 336 206, 348 216" stroke="var(--color-text-primary)" stroke-width={W.mid} stroke-linecap="round" class="squiggle"/>
+      <path d="M314 157 C 340 155, 366 156, 392 156" stroke="var(--color-text-primary)" stroke-width={W.mid} stroke-linecap="round" class="squiggle"/>
+
+      {/* small supporting nodes */}
+      <circle cx="360" cy="88" r="19" class="fill-[var(--color-blue)]" stroke="var(--color-text-primary)" stroke-width={W.thin}/>
+      <path d="M352 85 l5 6 l10 -12" stroke="var(--color-text-primary)" stroke-width={W.thin} stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="360" cy="226" r="19" class="fill-[var(--color-orange)]" stroke="var(--color-text-primary)" stroke-width={W.thin}/>
+      <path d="M351 230 l6 -7 l6 4 l7 -10" stroke="var(--color-text-primary)" stroke-width={W.thin} stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M375 100 C 392 108, 400 118, 404 128" stroke="var(--color-text-primary)" stroke-width={W.thin} stroke-linecap="round" stroke-dasharray="5 7" opacity="0.5"/>
+      <path d="M375 214 C 392 206, 400 196, 404 186" stroke="var(--color-text-primary)" stroke-width={W.thin} stroke-linecap="round" stroke-dasharray="5 7" opacity="0.5"/>
+
+      {/* the tangible outcome — a hand-drawn interface */}
+      <path d="M396 92 h108 v130 h-108 Z" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width={W.mid}/>
+      <path d="M396 92 h108 v24 h-108 Z" class="fill-[var(--color-blue)]" stroke="var(--color-text-primary)" stroke-width={W.mid}/>
+      <circle cx="408" cy="104" r="3.4" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width="1.4"/>
+      <circle cx="420" cy="104" r="3.4" class="fill-[var(--color-surface)]" stroke="var(--color-text-primary)" stroke-width="1.4"/>
+      <path d="M406 128 h44 v30 h-44 Z" class="fill-[var(--color-yellow)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+      <path d="M458 128 h38 v30 h-38 Z" class="fill-[var(--color-pink)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+      <path d="M406 172 h90 M406 184 h66" stroke="var(--color-text-primary)" stroke-width={W.hair} stroke-linecap="round" opacity="0.5"/>
+      <path d="M406 194 h46 v18 h-46 Z" class="fill-[var(--color-accent)]" stroke="var(--color-text-primary)" stroke-width={W.hair}/>
+
+      <path d="M370 250 C 410 260, 466 256, 508 246" stroke="var(--color-accent)" stroke-width={W.mid} stroke-linecap="round" opacity="0.7"/>
+      <text x="44" y="240" class="sk-label" fill="var(--color-text-tertiary)">{L.system3.start}</text>
+      <text x="404" y="276" class="sk-label" fill="var(--color-text-tertiary)">{L.system3.end}</text>
+    </g>
+  )}
+</svg>
+
+<style>
+  .sk-label { font-size: 15px; font-style: italic; letter-spacing: 0.06em; }
+  .sk-note-text { font-size: 12px; font-weight: 600; }
+  .sk-note { transform-box: fill-box; transform-origin: center; }
+
+  .squiggle {
+    stroke-dasharray: 3200;
+    stroke-dashoffset: 3200;
+    animation: draw-sq 3s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+  }
+
+  /* Staged sequence — kept brisk so the whole story lands in ~2s */
+  .sk-step1 { opacity: 0; animation: sk-fade 0.35s ease-out 0.1s forwards; }
+  .sq-main {
+    stroke-dasharray: 3200;
+    stroke-dashoffset: 3200;
+    animation: draw-sq 1s cubic-bezier(0.3, 0, 0.2, 1) 0.15s forwards;
+  }
+  .sk-step2 { opacity: 0; animation: sk-pop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) 1.1s forwards; transform-box: fill-box; transform-origin: center; }
+  .sq-branch {
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: draw-sq 0.32s ease-out 1.25s forwards;
+  }
+  .sk-artifacts { opacity: 0; animation: sk-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) 1.55s forwards; }
+  .sk-caption { opacity: 0; animation: sk-fade 0.35s ease-out 1.9s forwards; }
+
+  @keyframes sk-fade { to { opacity: 1; } }
+  @keyframes sk-pop { from { opacity: 0; scale: 0.4; } to { opacity: 1; scale: 1; } }
+  @keyframes sk-rise { from { opacity: 0; translate: 10px 0; } to { opacity: 1; translate: 0 0; } }
+  .squiggle-arrow { opacity: 0; animation: fade-arrow 0.4s ease-out 3s forwards; }
+  @keyframes draw-sq { to { stroke-dashoffset: 0; } }
+  @keyframes fade-arrow { to { opacity: 1; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .squiggle, .sq-main, .sq-branch { animation: none !important; stroke-dashoffset: 0; }
+    .squiggle-arrow { animation: none !important; opacity: 1; }
+    .sk-step1, .sk-step2, .sk-artifacts, .sk-caption { animation: none !important; opacity: 1; }
+  }
+</style>

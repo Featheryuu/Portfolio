@@ -7,14 +7,16 @@ const base = lang === 'zh' ? '/zh' : '';
 
 const t = lang === 'zh'
   ? {
-      available: '開放新專案合作',
-      role: '產品設計師',
-      greet: '嗨，我是',
-      name: '佳穎',
-      linePrefix: '我設計',
-      rotateWords: ['體驗', '產品', '系統', '介面'],
-      srWords: '體驗、產品、系統與介面',
-      blurb: '我是一位全端產品設計師，專注於解決真實的使用者問題並創造可衡量的商業成果。我提倡包容性設計，打造無障礙、以人為本的體驗。',
+      eyebrow: '嗨，我是佳穎，產品設計師',
+      headLead: '我設計人們',
+      headHighlight: '真正用得上手',
+      headTail: '的企業產品。',
+      subLead: '六年橫跨企業與新創的端到端設計經驗：',
+      proofs: [
+        { dot: 'bg-pink', text: '找出真正問題的研究' },
+        { dot: 'bg-orange', text: '能夠規模化的系統' },
+        { dot: 'bg-yellow', text: '經得起真實世界考驗的介面' },
+      ],
       stats: [
         { n: '6+', l: '設計年資' },
         { n: '15+', l: '產品上線' },
@@ -24,14 +26,16 @@ const t = lang === 'zh'
       getInTouch: '聯絡我',
     }
   : {
-      available: 'Available for new projects',
-      role: 'Product Designer',
-      greet: "Hi, I'm ",
-      name: 'Chia-Ying',
-      linePrefix: 'I design ',
-      rotateWords: ['experiences', 'products', 'systems', 'interfaces'],
-      srWords: 'experiences, products, systems, and interfaces',
-      blurb: 'A full-stack product designer who solves real user problems and delivers measurable business outcomes. I advocate for inclusive design and create accessible, human-centered experiences.',
+      eyebrow: "Hi, I'm Chia-Ying, Product Designer",
+      headLead: 'I design enterprise products people can ',
+      headHighlight: 'actually use',
+      headTail: '.',
+      subLead: 'Six years of end-to-end design across enterprise and startups:',
+      proofs: [
+        { dot: 'bg-pink', text: 'research that finds the real problem' },
+        { dot: 'bg-orange', text: 'systems that scale' },
+        { dot: 'bg-yellow', text: 'interfaces that hold up in the real world' },
+      ],
       stats: [
         { n: '6+', l: 'Years designing' },
         { n: '15+', l: 'Products shipped' },
@@ -72,36 +76,30 @@ const t = lang === 'zh'
 
   <div class="max-w-5xl mx-auto px-6 py-16 md:py-24 relative w-full">
     <div class="max-w-3xl">
-      {/* Availability badge */}
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-surface border border-border rounded-full mb-8 animate-fade-in-up shadow-sm">
-        <span class="relative flex w-2 h-2">
-          <span class="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75 animate-ping"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-        </span>
-        <span class="text-xs font-medium text-text-secondary">{t.available}</span>
-      </div>
-
-      <p class="text-xs font-medium text-accent tracking-[0.18em] uppercase mb-5 animate-fade-in-up flex items-center gap-3">
-        <span class="inline-block w-8 h-px bg-accent"></span>
-        {t.role}
+      <p class="text-base md:text-xl font-semibold text-accent tracking-[0.08em] uppercase mb-5 animate-fade-in-up flex items-center gap-3">
+        <span class="inline-block w-10 h-px bg-accent"></span>
+        {t.eyebrow}
       </p>
 
-      <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold text-text-primary leading-[1.05] mb-6 animate-fade-in-up animation-delay-100 tracking-tight">
-        {t.greet}<span class="relative inline-block">
-          <span class="relative z-10">{t.name}</span>
-          <span class="absolute bottom-1 left-0 w-full h-3 bg-orange -z-0" aria-hidden="true"></span>
-        </span><br/>
-        {t.linePrefix}{' '}
-        <span class="relative inline-block" data-rotate-keyword-b data-words={JSON.stringify(t.rotateWords)} aria-hidden="true">
-          <span class="relative z-10 text-accent">{t.rotateWords[0]}</span>
-          <span class="absolute bottom-1 left-0 w-full h-3 bg-yellow -z-0"></span>
-        </span>
-        <span class="sr-only">{t.srWords}</span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary leading-[1.1] mb-6 animate-fade-in-up animation-delay-100 tracking-tight">
+        {t.headLead}<span class="relative inline-block">
+          <span class="relative z-10">{t.headHighlight}</span>
+          <span class="absolute bottom-1 left-0 w-full h-3 bg-yellow -z-0" aria-hidden="true"></span>
+        </span>{t.headTail}
       </h1>
 
-      <p class="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed mb-10 animate-fade-in-up animation-delay-200">
-        {t.blurb}
+      {/* Subline: lead-in + scannable proof list */}
+      <p class="text-lg md:text-xl text-text-secondary leading-relaxed mb-4 animate-fade-in-up animation-delay-200">
+        {t.subLead}
       </p>
+      <ul class="space-y-2.5 mb-10 animate-fade-in-up animation-delay-200" role="list">
+        {t.proofs.map((p) => (
+          <li class="flex items-start gap-3 text-base md:text-lg text-text-secondary">
+            <span class={`w-2 h-2 rounded-full ${p.dot} ring-1 ring-text-primary/15 shrink-0 mt-2 md:mt-2.5`}></span>
+            {p.text}
+          </li>
+        ))}
+      </ul>
 
       {/* Inline stat strip */}
       <div class="mb-10 pb-8 grid grid-cols-3 gap-4 md:gap-8 max-w-2xl animate-fade-in-up animation-delay-250">
@@ -137,40 +135,6 @@ const t = lang === 'zh'
 <script>
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isCoarse = window.matchMedia('(pointer: coarse)').matches;
-
-  // Rotating keyword
-  if (!reduceMotion) {
-    const rotateEl = document.querySelector<HTMLElement>('[data-rotate-keyword-b]');
-    let words = ['experiences', 'products', 'systems', 'interfaces'];
-    try {
-      const parsed = JSON.parse(rotateEl?.dataset.words || '[]');
-      if (Array.isArray(parsed) && parsed.length) words = parsed;
-    } catch {}
-    const el = document.querySelector<HTMLElement>('[data-rotate-keyword-b] span.relative');
-    const headline = document.querySelector<HTMLElement>('h1');
-    if (el) {
-      let i = 0;
-      let paused = false;
-      const tick = () => {
-        if (paused) return;
-        i = (i + 1) % words.length;
-        el.style.transition = 'opacity 0.3s, transform 0.3s';
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(-8px)';
-        setTimeout(() => {
-          el.textContent = words[i];
-          el.style.transform = 'translateY(8px)';
-          requestAnimationFrame(() => {
-            el.style.opacity = '1';
-            el.style.transform = 'translateY(0)';
-          });
-        }, 300);
-      };
-      setInterval(tick, 2400);
-      headline?.addEventListener('mouseenter', () => { paused = true; });
-      headline?.addEventListener('mouseleave', () => { paused = false; });
-    }
-  }
 
   // Mouse parallax for drifting shapes (desktop only, respects reduced motion)
   if (!reduceMotion && !isCoarse) {
